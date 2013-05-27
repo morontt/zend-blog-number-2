@@ -1,0 +1,96 @@
+/*
+    Document   : admin
+    Created on : 29.09.2012, 0:08:06
+    Author     : morontt
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+body {
+    font-family: "Consolas", "Lucida Console", monospace;
+    font-size: 12pt;
+    color: #AAA;
+}
+a {
+	text-decoration: none;
+	color: #95E61D;
+}
+a:hover {
+	color: #DAF29F;
+}
+.ym-wrapper {
+    max-width: 80em;
+}
+.ym-column {
+    display: block;
+    overflow: hidden;
+    padding-left: 250px; /* column width */
+    width: auto;
+}
+.ym-col1 {  /* content */
+    position: relative;
+    float: left;
+    width: 100%;
+}
+.ym-col3 { /* sidebar */
+    position: relative;
+    float: left;
+    width: 250px; /* column width */
+    right: 250px; /* column width */
+    *right: 0px; /* fix for ie6 & ie7 */
+    margin: 0 0 0 -100%;
+}
+header {
+    background: url('/img/background/adminbody.gif') repeat;
+}
+footer {
+    background: url('/img/background/bg-header.png') repeat;
+}
+#main {
+    background: url('/img/background/adminbody.gif') repeat;
+}
+.adminmenu,
+.ym-hlist {
+    background: url('/img/background/bg-header.png') repeat;
+}
+.ym-hlist ul li a,
+.ym-hlist ul li strong {
+    color: #FFF;
+}
+.ym-hlist ul li a:focus,
+.ym-hlist ul li a:hover,
+.ym-hlist ul li a:active  {
+    background: #697F3D;
+    background: rgba(0,0,0,0.2);
+}
+.ym-hlist ul li.active {
+    background: #697F3D;
+    background: rgba(0, 0, 0, 0.2);
+}
+.ym-hlist ul li a:hover,
+.ym-hlist ul li a:focus {
+    color: #FFF;
+}
+table {
+    margin: 5px;
+    border: 1px solid #000;
+    border-collapse: separate;
+    text-align: left;
+    border-spacing: 3px;
+    padding: 2px;
+}
+th {
+    background: #000;
+    font-weight: 500;
+    padding: 5px;
+}
+tr {
+    background: #333;
+}
+td {
+    border: 1px solid #000;
+    padding: 5px;
+}
+tr.odd {
+    background: #445044;
+}

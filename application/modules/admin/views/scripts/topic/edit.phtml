@@ -1,0 +1,12 @@
+<?php $this->headTitle('Редактирование записи'); ?>
+
+<div id="view-content">
+    <div style="text-align: right;">
+        <a href="<?php echo $this->url(array('id' => $this->topicId), 'retwit'); ?>">Твитнуть</a>
+    </div>
+    <div class="theme">Редактирование записи</div>
+    <div class="strsigninform">
+        <?php echo $this->form; ?>
+        <p>Используйте тег &lt;!-- cut --&gt;, если необходимо отделить краткое описание записи, остальное уйдёт под кат.</p>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<?php
+    if ($this->level > 0) {
+        $margim = $this->level * 40;
+        if ($margim > 320) {
+            $margim = 320;
+        }
+        $style = ' style="margin-left:' . $margim . 'px;"';
+    } else {
+        $style = '';
+    }
+?><div class="comment-item"<?php echo $style; ?>>
+<div class="comment-header">
+<time datetime="<?php echo $this->viewDateTime($this->comment['time_created'], DateTime::W3C); ?>"><?php echo $this->viewDateTime($this->comment['time_created']); ?></time>
+<?php
+    if ($this->comment['username']) {
+        echo $this->comment['username'];
+    } else {
+        if ($this->comment['website']) {
+            echo '<a href="' . $this->comment['website'] . '">' . $this->comment['name'] . '</a>';
+        } else {
+            echo $this->comment['name'];
+        }
+    }
+    if (Zend_Auth::getInstance()->hasIdentity()) {
+        echo '&nbsp;[' . $this->comment['ip_addr'] . ']';
+    }
+?>
+</div>
+<div class="comment-body">
+<div class="avatar"><img src="<?php echo $this->getAvatar($this->comment); ?>" width="80" height="80" alt="avatar"/></div>
+<div class="comment-text"><?php echo nl2br($this->comment['text']); ?></div>
+<div class="comment-reply"><span data-comment_id="<?php echo $this->comment['id']; ?>">Ответить</span></div>
+<div class="clear-left"></div>
+</div>
+</div>
+<div id="form_bottom_<?php echo $this->comment['id']; ?>" class="form-bottom-comment"></div>

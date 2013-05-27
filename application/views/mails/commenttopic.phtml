@@ -1,0 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <?php include('tablelogo.phtml'); ?>
+
+        <div style="padding: 10px 0 0;font-family:'Consolas','Lucida Console',monospace;font-size:12pt;color:#000;">
+            Кто-то оставил комментарий к записи &rarr; <a style="color: #008CD9;" href="<?php
+                echo BASE_URL . $this->url(array('url' => $this->topicUrl), 'topic_url', true); ?>">link</a>
+            <br/><br/>
+            <?php echo $this->formData['name']; ?>:<br/>
+            <q><?php echo $this->formData['comment_text']; ?></q>
+            <hr style="color: #859C40;"/>
+        </div>
+    </body>
+</html>

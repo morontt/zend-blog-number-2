@@ -1,0 +1,113 @@
+<?php
+    $this->headScript()->appendFile('/js/topic_script_20130319.min.js', 'text/javascript', array());
+    $options = Zend_Registry::get('options');
+?>
+<article>
+    <time datetime="<?php echo $this->viewDateTime($this->post->time_created, DateTime::W3C); ?>">
+        <?php echo $this->viewDateTime($this->post->time_created); ?>
+    </time>
+    <h2><a href="<?php echo $this->url(array('url' => $this->post->cat_url), 'category-page', true); ?>"><?php
+            echo $this->post->cat_name; ?></a> &rarr; <?php echo $this->post->title; ?></h2>
+    <div class="text-post">
+        <?php echo $this->post->text_post; ?>
+    </div>
+    <a href="<?php echo $options['social_link']['googleplus']; ?>?rel=author" class="author-link">
+        <img src="<?php echo IMG_DOMAIN; ?>/g-plus-icon.png" alt="g-plus-icon"/>
+    </a>
+    <?php
+        $cacheOutput = Zend_Registry::get('cacheOutput');
+        $key         = 'tag_post_' . $this->post->id;
+        if (!($cacheOutput->start($key))) {
+            $tags = $this->post->findManyToManyRowset('Application_Model_Tags', 'Application_Model_PostsTags');
+            if (count($tags)) {
+                ?><div class="tags">Теги: <?php echo $this->viewTags($tags); ?></div><?php
+            }
+            $cacheOutput->end();
+        }
+    ?>
+</article>
+<?php if (getenv('APPLICATION_ENV') != 'testing') { ?>
+<section id="social">
+    <div id="fb-root"></div>
+        <script type="text/javascript">
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "//connect.facebook.net/ru_RU/all.js#xfbml=1";
+                fjs.parentNode.insertBefore(js, fjs);
+            } (document, 'script', 'facebook-jssdk'));
+        </script>
+    <div class="facebook">
+        <div class="fb-like" data-send="true" data-layout="button_count" data-width="220" data-show-faces="false"></div>
+    </div>
+    <div class="googleplus">
+        <div class="g-plusone" data-size="medium"></div>
+        <script type="text/javascript">
+            window.___gcfg = { lang: 'ru' };
+            (function () {
+                var po = document.createElement('script');
+                po.type = 'text/javascript';
+                po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(po, s);
+            })();
+        </script>
+    </div>
+    <div class="twitter">
+        <a href="https://twitter.com/share" class="twitter-share-button" data-lang="ru">Твиттер</a>
+        <script>
+            !function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (!d.getElementById(id)) {
+                    js = d.createElement(s);
+                    js.id = id;
+                    js.src = "//platform.twitter.com/widgets.js";
+                    fjs.parentNode.insertBefore(js, fjs);
+                }
+            } (document, "script", "twitter-wjs");
+        </script>
+    </div>
+    <div class="clear-left"></div>
+</section>
+<?php } ?>
+<section id="comments">
+    <div id="noscript">
+        Учтите, что комментарии добавляются только при включённом JavaScript в браузере.
+        В ином случае информация хоть и не пропадёт бесследно, но будет отправлена в спам и вряд ли хоть кто-нибудь её увидит.
+    </div>
+    <div id="all-comments">
+    <?php
+        if (Zend_Auth::getInstance()->hasIdentity()) {
+            $keyComments = 'comments_post_auth_' . $this->post->id;
+        } else {
+            $keyComments = 'comments_post_' . $this->post->id;
+        }
+        if (!($cacheOutput->start($keyComments))) {
+            $comments = $this->post->getComments();
+            echo $this->partialLoop('index/comments.phtml', $comments);
+            $cacheOutput->end();
+        }
+    ?>
+    <?php
+        $countComments = (int) $this->post->count_comments;
+        if ($countComments) {
+    ?>
+        <div id="topic-reply">
+            <?php echo $this->commentsCountString($countComments); ?> <span>Написать что-нибудь</span>
+        </div>
+        <div id="comment-form-wrapper"></div>
+    <?php } ?>
+    </div>
+    <div id="comment_add">
+        <?php echo $this->partial('index/formcomment.phtml', array(
+            'form' => $this->form,
+        )); ?>
+    </div>
+</section>
+<script type="text/javascript">
+    var auth_comment = <?php echo (Zend_Auth::getInstance()->hasIdentity()) ? 'true' : 'false'; ?>;
+    var addCommentLink = '<?php echo $this->url(array(), 'add_ajax_comment'); ?>';
+</script>

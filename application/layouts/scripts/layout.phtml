@@ -1,0 +1,167 @@
+<?php echo $this->doctype() . PHP_EOL; ?>
+<html lang="ru">
+<head>
+<?php
+    $this->headMeta()->prependName('author', 'morontt')
+                     ->prependHttpEquiv('Content-Type', 'text/html; charset=UTF-8');
+    if (isset($this->metaDescription) && $this->metaDescription) {
+        $this->headMeta()->appendName('description', $this->metaDescription);
+    }
+    echo $this->headMeta() . PHP_EOL;
+    $this->headTitle($this->layout()->title);
+    $this->headTitle($this->browsertitle);
+    $this->headTitle()->setSeparator(' » ');
+    echo $this->headTitle() . PHP_EOL; ?>
+<link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+<?php
+    $this->headLink(array(
+        'rel'   => 'alternate',
+        'title' => 'RSS',
+        'href'  => BASE_URL . '/feed/rss',
+        'type'  => 'application/rss+xml',
+    ));
+    $this->headLink(array(
+        'rel'   => 'alternate',
+        'title' => 'Atom',
+        'href'  => BASE_URL . '/feed/atom',
+        'type'  => 'application/atom+xml',
+    ));
+    $this->headLink()->prependStylesheet('/css/main_20130319.min.css')
+        ->prependStylesheet('/css/yaml/core/iehacks.min.css', 'screen', 'lte IE 7')
+        //->appendStylesheet('/js/syntaxhighlighter/style/shCoreRDark.css')
+        //->appendStylesheet('/js/syntaxhighlighter/style/shThemeRDark.css')
+        /**
+         *  before YUI Compressor
+         *
+        ->prependStylesheet('/js/syntaxhighlighter/style/shMain.css')
+        ->prependStylesheet('/css/yaml/forms/gray-theme.css')
+        ->prependStylesheet('/css/yaml/navigation/hlist.css')
+        ->prependStylesheet('/css/yaml/screen/screen-FULLPAGE-layout.css')
+        ->prependStylesheet('/css/yaml/core/base.css'); */
+        ->prependStylesheet('/css/all_20130219.min.css');
+    echo $this->headLink() . PHP_EOL; ?>
+<!--[if gte IE 7]>
+<style type="text/css">
+    #main .ym-wrapper { background: #DCE7B4; }
+</style>
+<![endif]-->
+<!--[if IE 9]>
+<style type="text/css">
+    #main .ym-wrapper { background: url('/img/background/bg-main-ym-wrapper.svg'); }
+</style>
+<![endif]-->
+<?php
+    echo $this->headStyle() . PHP_EOL;
+    $this->headScript()->prependFile('http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js', 'text/javascript', array())
+        //->appendFile('/js/syntaxhighlighter/shCore.js', 'text/javascript', array())
+        //->appendFile('/js/syntaxhighlighter/shBrushPhp.js', 'text/javascript', array())
+        //->appendFile('/js/syntaxhighlighter/shBrushXml.js', 'text/javascript', array())
+        //->appendFile('/js/syntaxhighlighter/shBrushJScript.js', 'text/javascript', array())
+        //->appendFile('/js/syntaxhighlighter/shBrushSql.js', 'text/javascript', array())
+        //->appendFile('/js/syntaxhighlighter/shBrushBash.js', 'text/javascript', array())
+        //->appendFile('/js/syntaxhighlighter/shBrushPlain.js', 'text/javascript', array())
+        ->prependFile('/js/syntaxhighlighter/shMain_20130218.js', 'text/javascript', array())
+        ->prependFile('http://html5shim.googlecode.com/svn/trunk/html5.js', 'text/javascript', array('conditional' => 'lt IE 9'));
+
+    echo $this->headScript() . PHP_EOL; ?>
+<?php
+    if (!in_array(getenv('APPLICATION_ENV'), array('development', 'testing')) && !Zend_Auth::getInstance()->hasIdentity()) {
+        $options = Zend_Registry::get('options');
+        $googleAnalyticsCode = $options['sys_parameters']['googleanalytic'];
+?>
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '<?php echo $googleAnalyticsCode; ?>']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script>
+<?php } ?>
+</head>
+<body>
+    <header>
+        <div class="ym-wrapper">
+            <div class="ym-wbox">
+                <h1><?php echo $this->layout()->title; ?></h1>
+            </div>
+        </div>
+    </header>
+    <nav id="navigation">
+        <div class="ym-wrapper">
+            <div class="ym-hlist">
+                <?php
+                    $cacheOutput = Zend_Registry::get('cacheOutput');
+                    if (Zend_Auth::getInstance()->hasIdentity()) {
+                        $menuKey = 'navigation_menu_auth_' . md5(serialize(Zend_Registry::get('requestParams')));
+                        $sidebarKey = 'sidebar_auth';
+                    } else {
+                        $menuKey = 'navigation_menu_' . md5(serialize(Zend_Registry::get('requestParams')));
+                        $sidebarKey = 'sidebar';
+                    }
+                    if (!($cacheOutput->start($menuKey))) {
+                        echo $this->action('menu', 'navigation', null, array()) . PHP_EOL;
+                        $cacheOutput->end();
+                    }
+                ?>
+            </div>
+        </div>
+    </nav>
+    <div id="main">
+        <div class="ym-wrapper">
+            <div class="ym-wbox">
+                <div class="ym-column">
+                    <section class="ym-col1">
+                        <div class="ym-cbox">
+                            <?php echo $this->layout()->content . PHP_EOL; ?>
+                        </div>
+                    </section>
+                    <aside class="ym-col3">
+                        <div class="ym-cbox">
+                            <?php
+                                if (!($cacheOutput->start($sidebarKey))) {
+                                    echo $this->action('index', 'navigation', null, array()) . PHP_EOL;
+                                    $cacheOutput->end();
+                                }
+                            ?>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="ym-wrapper">
+            <div class="ym-wbox">
+                <div class="ym-grid">
+                    <div class="ym-g33 ym-gl">
+                        <div class="ym-gbox">
+                            Layout based on <a href="http://www.yaml.de" class="ext">YAML</a>
+                        </div>
+                    </div>
+                    <div class="ym-g33 ym-gl">
+                        <div class="ym-gbox">
+                            <a href="http://validator.w3.org/check?uri=referer" title="Клацни здесь для проверки страницы" class="ext">Valid HTML</a>
+                        </div>
+                    </div>
+                    <div class="ym-g33 ym-gr">
+                        <div class="ym-gbox">
+                        <?php if (Zend_Auth::getInstance()->hasIdentity()) { ?>
+                            <a href="<?php echo $this->url(array(), 'admin', true); ?>">Админка</a><br/>
+                            <a href="<?php echo $this->url(array(), 'logout'); ?>">Выход</a>
+                        <?php } else { ?>
+                            <a href="<?php echo $this->url(array(), 'login'); ?>">Вход</a>
+                        <?php } ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script type="text/javascript">
+        SyntaxHighlighter.all()
+    </script>
+</body>
+</html>

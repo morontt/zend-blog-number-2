@@ -1,0 +1,33 @@
+<?php
+
+    if ($this->hash) {
+        $topicUrl = $this->url(array('id' => $this->formData['topicId'], 'hash' => $this->hash), 'topic_mail', true);
+    } else {
+        $topicUrl = $this->url(array('url' => $this->topicUrl), 'topic_url', true);
+    }
+
+    if (Zend_Auth::getInstance()->hasIdentity()) {
+        $name = Zend_Auth::getInstance()->getIdentity()->username;
+    } else {
+        $name = $this->formData['name'];
+    }
+
+?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <?php include('tablelogo.phtml'); ?>
+
+        <div style="padding: 10px 0 0;font-family:'Consolas','Lucida Console',monospace;font-size:12pt;color:#000;">
+            Кто-то ответил на ваш комментарий в записи &rarr; <a style="color: #008CD9;" href="<?php
+                echo BASE_URL . $topicUrl; ?>"><?php echo $this->topicTitle; ?></a>
+            <br/><br/>
+            <?php echo $name; ?>:<br/>
+            <q><?php echo $this->formData['comment_text']; ?></q>
+            <hr style="color: #859C40;"/>
+            Внимание, письмо отправлено роботом и отвечать на него не нужно, т.к. роботы писем не читают.
+        </div>
+    </body>
+</html>

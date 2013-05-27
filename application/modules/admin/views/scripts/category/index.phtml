@@ -1,0 +1,51 @@
+<div id="view-content">
+    <?php if (!empty($this->messages)) { ?>
+        <div class="messages">
+            <?php
+            foreach ($this->messages as $message) {
+                echo $message . '<br>';
+            }
+            ?>
+        </div>
+    <?php } ?>
+    <h3>Управление категориями</h3>
+    <div style="text-align: right;">
+        <a href="<?php echo $this->url(array(), 'category_create'); ?>">Новая категория</a>
+    </div>
+    <table>
+        <tr>
+            <th>Категория</th>
+            <th>Родитель</th>
+            <th>Количество</th>
+            <th></th>
+            <th></th>
+        </tr>
+        <?php foreach ($this->paginator as $category) { ?>
+        <tr>
+            <td style="background-color: #222;">
+                <a href="<?php echo $this->url(array('url' => $category->url), 'category-page'); ?>">
+                    <?php echo $category->name; ?>
+                </a>
+            </td>
+            <?php if ($category->parent_name) { ?>
+                <td><?php echo $category->parent_name; ?></td>
+            <?php } else { ?>
+                <td>...</td>
+            <?php } ?>
+            <td><?php if ($category->post_count > 0) { echo $category->post_count; } ?></td>
+            <td>
+                <a href="<?php echo $this->url(array('id' => $category->id), 'category_edit'); ?>">Edit</a>
+            </td>
+            <td>
+                <a href="<?php echo $this->url(array('id' => $category->id), 'category_delete'); ?>">Delete</a>
+            </td>
+        </tr>
+        <?php } ?>
+    </table>
+    <?php echo $this->paginationControl($this->paginator, 'Elastic', 'main_paginator.phtml'); ?>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#view-content tr:odd').addClass('odd');
+    });
+</script>

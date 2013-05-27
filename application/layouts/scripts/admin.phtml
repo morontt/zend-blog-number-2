@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<?php
+    $this->headMeta()->appendHttpEquiv('Content-Type', 'text/html; charset=UTF-8')
+                     ->appendHttpEquiv('Content-Language', 'RU')
+                     ->appendName('author', 'morontt');
+    echo $this->headMeta() . PHP_EOL;
+    echo $this->headTitle() . PHP_EOL; ?>
+<?php
+    $this->headScript()->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js', 'text/javascript', array())
+                       ->appendFile('http://html5shim.googlecode.com/svn/trunk/html5.js', 'text/javascript', array('conditional' => 'lt IE 9'));
+
+    echo $this->headScript() . PHP_EOL; ?>
+
+<link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+<?php
+    $this->headLink()->appendStylesheet('/css/yaml/core/base.css')
+                     ->appendStylesheet('/css/yaml/screen/screen-FULLPAGE-layout.css')
+                     ->appendStylesheet('/css/yaml/navigation/hlist.css')
+                     ->appendStylesheet('/css/yaml/navigation/vlist.css')
+                     ->appendStylesheet('/css/yaml/core/iehacks.css', 'screen', 'lte IE 7')
+                     ->appendStylesheet('/css/admin.css');
+    echo $this->headLink() . PHP_EOL; ?>
+<?php echo $this->headStyle() . PHP_EOL; ?>
+</head>
+<body>
+    <header>
+        <div class="ym-wrapper">
+            <div class="ym-wbox">
+                <h1>Admin <?php echo $this->layout()->title; ?></h1>
+            </div>
+        </div>
+    </header>
+    <nav id="navigation" class="adminmenu">
+        <div class="ym-wrapper">
+            <div class="ym-hlist">
+                <?php echo $this->action('adminmenu', 'navigation', null, array()) . PHP_EOL; ?>
+            </div>
+        </div>
+    </nav>
+    <div id="main">
+        <div class="ym-wrapper">
+            <div class="ym-wbox">
+                <div class="ym-column">
+                    <section class="ym-col1">
+                        <div class="ym-cbox">
+                            <?php echo $this->layout()->content . PHP_EOL; ?>
+                        </div>
+                    </section>
+                    <aside class="ym-col3">
+                        <div class="ym-cbox">
+                            <?php echo $this->action('adminsidebar', 'navigation', null, array()) . PHP_EOL; ?>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="ym-wrapper">
+            <div class="ym-wbox">
+                Footer - Layout based on <a href="http://www.yaml.de">YAML</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

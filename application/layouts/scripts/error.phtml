@@ -1,0 +1,37 @@
+<?php
+    if ($this->codeError && in_array($this->codeError, array('404', '500'))) {
+        $codeError = $this->codeError;
+    } else {
+        $codeError = '500';
+    }
+?><!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Page not fount</title>
+        <style type="text/css">
+            body {
+                font-family: "Consolas", "Lucida Console", monospace;
+                font-size: 12pt;
+                background-color: #000;
+                color: #FFF;
+                background-image: url("/img/error/<?php echo $codeError; ?>.jpg");
+                background-repeat: no-repeat;
+                background-position: 20px 10px;
+            }
+            #cont {
+                padding: 350px 20px 0;
+                margin: 0;
+                width: 480px;
+                text-align: center;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="cont">
+            <?php echo $this->layout()->content . PHP_EOL; ?>
+        </div>
+    </body>
+
+</html>

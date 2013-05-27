@@ -1,0 +1,122 @@
+<?php
+    $urlString = $this->url(array('url' => 'd73bvckd6dhj'), 'category-page', true);
+
+    function renderChild($id, $arrayValue, $url)
+    {
+        $tempArray = array();
+        foreach ($arrayValue as $item) {
+            if ($item['parent_id'] == $id) {
+                $tempArray[] = $item;
+            }
+        }
+
+        if (count($tempArray)) {
+            echo '<ul>';
+            foreach ($tempArray as $item) {
+                echo '<li><a href="' . str_replace('d73bvckd6dhj', $item['url'], $url) . '">' . $item['name'] . '</a>';
+                renderChild($item['id'], $arrayValue, $url);
+                echo '</li>';
+            }
+            echo '</ul>';
+        }
+    }
+
+    $options = Zend_Registry::get('options');
+?>
+<div id="social-buttons">
+    <a class="s-rss" href="<?php echo BASE_URL; ?>/feed/rss" title="RSS">rss</a>
+    <a class="s-fcb" href="<?php echo $options['social_link']['facebook']; ?>" title="facebook">facebook</a>
+    <a class="s-twt" href="<?php echo $options['social_link']['twitter']; ?>" title="twitter">twitter</a>
+    <a class="s-ins" href="<?php echo $options['social_link']['instagram']; ?>" title="instagram">instagram</a>
+    <a class="s-lj" href="<?php echo $options['social_link']['livejournal']; ?>" title="livejournal">livejournal</a>
+</div>
+<div class="category-list-header">
+    Категории:
+</div>
+<div class="category-list">
+    <?php renderChild(0, $this->category, $urlString); ?>
+</div>
+<?php
+    $tagsObject = new Application_Model_Tags();
+    $tags = $tagsObject->getTagCloudData();
+
+    $tagsArray = array();
+    foreach ($tags as $item) {
+        $tagsArray[] = array(
+            'title'  => $item['name'],
+            'weight' => $item['count'],
+            'params' => array(
+                'url' => $this->url(array(
+                    'url' => $item['url'],
+                ), 'tag-page', true)
+            )
+        );
+    }
+
+    $cloud = new Zend_Tag_Cloud(array(
+        'tags' => $tagsArray,
+        'TagDecorator' => array(
+            'decorator' => 'HtmlTag',
+            'options' => array(
+                'fontSizeUnit' => 'px',
+                'minFontSize' => 12,
+                'maxFontSize' => 24,
+            ),
+        ),
+    ));
+?>
+<div class="category-list-header">
+    Теги:
+</div>
+<div class="tag-list">
+    <?php echo $cloud; ?>
+</div>
+
+<div class="category-list-header">
+    Статистика:
+</div>
+<div class="tag-list">
+    <?php
+        if (!in_array(getenv('APPLICATION_ENV'), array('development', 'testing'))) {
+            $flagcounterCode = $options['sys_parameters']['flagcounter'];
+    ?>
+    <a href="http://s09.flagcounter.com/more/<?php echo $flagcounterCode; ?>">
+        <img src="http://s09.flagcounter.com/count/<?php echo $flagcounterCode; ?>/bg_000000/txt_FFFFFF/border_FFFFFF/columns_2/maxflags_8/viewers_3/labels_1/pageviews_1/"
+        alt="free counters" class="no-style"/>
+    </a>
+    <?php } else { ?>
+        <img src="/img/dev_flagcounter.png" alt="free counters" class="no-style"/>
+    <?php } ?>
+</div>
+<?php if ($this->twitterBlock) { ?>
+<div id="twitter-header">
+    <img src="<?php echo $this->twitterResponse->profile_image_url_https; ?>" alt="" width="32" height="32" />
+    <div class="desc">
+        <a href="https://twitter.com/intent/user?screen_name=<?php echo $this->twitterResponse->screen_name; ?>">@<?php echo $this->twitterResponse->screen_name; ?></a><br/>
+        <?php echo $this->twitterResponse->location; ?>
+    </div>
+    <div class="clear-left"></div>
+</div>
+<div id="twitter-status-list">
+    <?php
+        $twittCount = 0;
+        foreach ($this->twitterStatus->toValue() as $status) {
+            $dateTime = date_create_from_format('D M d H:i:s O Y', $status->created_at);
+            if ($twittCount == 5) {
+                break;
+            }
+            $twittCount++;
+    ?>
+    <div class="twitter-status">
+        <?php echo $this->twitterText($status->text); ?>
+        <a class="twitter_time" href="https://twitter.com/<?php
+            echo $this->twitterResponse->screen_name;
+        ?>/status/<?php echo $status->id; ?>"><?php echo date_format($dateTime, 'd.m.Y'); ?></a>
+    </div>
+    <?php } ?>
+</div>
+<div id="twitter-footer">
+    <a href="https://twitter.com"><img src="<?php echo IMG_DOMAIN; ?>/twitter_bird.png" alt=""/></a>
+    <span><a href="https://twitter.com/<?php echo $this->twitterResponse->screen_name; ?>">Присоединяйтесь</a></span>
+</div>
+<?php } ?>

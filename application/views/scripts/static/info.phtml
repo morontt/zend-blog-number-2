@@ -1,0 +1,41 @@
+<?php
+    $styleString = <<<STYLE
+#infopage-img {
+    float: left;
+    padding: 0 1em 0 0;
+}
+.vcard {
+    width: 342px;
+}
+STYLE;
+
+    $this->headStyle()->appendStyle($styleString);
+    $this->headLink()->appendStylesheet('/css/yaml/add-ons/microformats/microformats.css');
+
+    $this->headMeta()->appendName('description', 'Персональный блог Харченко Александра. Общая информация.');
+?>
+<article>
+    <h2>Общая информация</h2>
+    <div class="text-post">
+        <div id="infopage-img">
+            <img src="<?php echo IMG_DOMAIN . '/face_352.jpg'; ?>" alt="Собственной персоной" title="Собственной персоной"/>
+        </div>
+        <div id="infopage-text">
+            <p>Данный блог родился как тестовое задание по освоению PHP. Рождением дело не ограничилось, так как пишу его и дальше,
+                причём как изнутри, в смысле кода, так и снаружи, в виде статей и заметок.</p>
+            <p>Пару слов о себе. Веб-разработчик, работаю в <a href="http://lazy-ants.de/" class="ext">Lazy Ants</a>.
+                Физик и математик сам по себе и по образованию. Программирование для меня хобби, которое к тому же приносит деньги.
+                Вроде всё, пара слов закончилась.</p>
+        </div>
+        <div class="clear-left"></div>
+        <div id="hcard-aleksandr-harchenko" class="vcard">
+            <span class="fn">Александр Харченко</span><br/>
+            <span class="title">Веб-разработчик</span> в <a class="org" href="http://lazy-ants.de/">Lazy-ants.de</a><br/><br/>
+            Мыло: <a class="email" href="mailto:morontt@gmail.com">morontt@gmail.com</a><br/>
+            Skype: morontt.kh
+            <div class="adr">
+                <span class="country-name">Украина</span>, <span class="locality">Харьков</span>
+            </div>
+        </div>
+    </div>
+</article>

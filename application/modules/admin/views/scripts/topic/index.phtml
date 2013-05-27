@@ -1,0 +1,48 @@
+<div id="view-content">
+    <?php if (!empty($this->messages)) { ?>
+        <div class="messages">
+            <?php
+            foreach ($this->messages as $message) {
+                echo $message . '<br>';
+            }
+            ?>
+        </div>
+    <?php } ?>
+    <h3>Управление записями</h3>
+    <table>
+        <tr>
+            <th>Заголовок</th>
+            <th>Категория</th>
+            <th>Скрытие</th>
+            <th>Дата создания</th>
+            <th></th>
+            <th></th>
+        </tr>
+        <?php foreach ($this->paginator as $topic) { ?>
+        <tr>
+            <td style="background-color: #222;">
+                <a href="<?php echo $this->url(array('url' => $topic->url), 'topic_url'); ?>">
+                    <?php echo $this->cutSubString($topic->title, 36); ?>
+                </a>
+            </td>
+            <td>
+                <?php echo $topic->cat_name; ?>
+            </td>
+            <td><?php if ($topic->hide) { ?>Да<?php } ?></td>
+            <td><?php echo $this->viewDateTime($topic->time_created); ?></td>
+            <td>
+                <a href="<?php echo $this->url(array('id' => $topic->id), 'topic_edit'); ?>">Edit</a>
+            </td>
+            <td>
+                <a href="<?php echo $this->url(array('id' => $topic->id), 'topic_delete'); ?>">Delete</a>
+            </td>
+        </tr>
+        <?php } ?>
+    </table>
+    <?php echo $this->paginationControl($this->paginator, 'Elastic', 'main_paginator.phtml'); ?>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#view-content tr:odd').addClass('odd');
+    });
+</script>

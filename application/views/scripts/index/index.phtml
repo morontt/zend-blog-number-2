@@ -1,0 +1,45 @@
+<?php
+if (count($this->posts)) {
+    foreach ($this->posts as $post) {
+        $topicUrl = $this->url(array('url' => $post->url), 'topic_url', true);
+        ?>
+        <article>
+            <time datetime="<?php echo $this->viewDateTime($post->time_created, DateTime::W3C); ?>">
+                <?php echo $this->viewDateTime($post->time_created); ?>
+            </time>
+            <h2>
+                <a href="<?php echo $this->url(array('url' => $post->cat_url), 'category-page', true); ?>"><?php
+                    echo $post->cat_name; ?></a> &rarr;
+                <a href="<?php echo $topicUrl; ?>"><?php echo $post->title; ?></a>
+            </h2>
+            <div class="text-post"><?php echo $this->TopicPreview($post->text_post, $topicUrl); ?></div>
+            <?php
+                $cacheOutput = Zend_Registry::get('cacheOutput');
+                $key = 'tag_post_' . $post->id;
+                if (!($cacheOutput->start($key))) {
+                    $tags = $post->findManyToManyRowset('Application_Model_Tags', 'Application_Model_PostsTags');
+                    if (count($tags)) { ?><div class="tags">Теги: <?php echo $this->viewTags($tags); ?></div><?php
+                    }
+                    $cacheOutput->end();
+                }
+            ?>
+            <?php
+            $countComments = (int) $post->count_comments;
+            if ($countComments) {
+                ?>
+                <div class="count_comments">
+                    <a href="<?php echo $topicUrl; ?>#comments">
+                        <?php echo $this->commentsCountString($countComments); ?>
+                    </a>
+                </div>
+        <?php } else { ?>
+                <div class="count_comments">
+                    <a href="<?php echo $topicUrl; ?>#comments">Оставить комментарий</a>
+                </div>
+        <?php } ?>
+        </article>
+    <?php } ?>
+<?php } else { ?>
+    <p>Никто ничего не написал</p>
+<?php } ?>
+<?php echo $this->paginationControl($this->posts, 'Elastic', 'main_paginator.phtml'); ?>

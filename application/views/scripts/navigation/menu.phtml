@@ -1,0 +1,31 @@
+<?php
+    $active = ' class="active"';
+    $noHomePage = isset($this->noHomePage) ? true : false;
+
+    $requestParams = Zend_Registry::get('requestParams');
+    $requestString = implode("-", $requestParams);
+?><ul>
+    <li<?php if (!$this->breadcrumbs && !$noHomePage) echo $active; ?>><a href="/">Домой</a></li>
+<?php
+    if (count($this->breadcrumbs)) {
+        foreach ($this->breadcrumbs as $key => $item) {
+?>
+    <li<?php if ($key == 0) echo $active; ?>>
+        <a href="<?php echo $item['link']; ?>"><?php echo $this->cutSubString($item['name'], 16); ?></a>
+    </li>
+<?php
+        }
+    }
+?>
+    <li<?php if ($requestString == 'default-statistic-index') echo $active; ?>>
+        <a href="<?php echo $this->url(array(), 'statistica'); ?>">Статистика</a>
+    </li>
+    <li<?php if ($requestString == 'default-static-display-info') echo $active; ?>>
+        <a href="<?php echo $this->url(array(), 'info'); ?>">Инфо</a>
+    </li>
+<?php if (Zend_Auth::getInstance()->hasIdentity()) { ?>
+    <li>
+        <a href="<?php echo $this->url(array(), 'admin', true); ?>">Админка</a>
+    </li>
+<?php } ?>
+</ul>
