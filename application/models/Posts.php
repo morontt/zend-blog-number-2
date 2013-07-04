@@ -11,22 +11,30 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
     public function getAllPosts()
     {
         $select = $this->select()
-                       ->setIntegrityCheck(false)
-                       ->from(array('p' => $this->_name))
-                       ->joinInner(array('c' => 'category'), 'c.id = p.category_id', array(
-                           'cat_name' => 'c.name',
-                           'cat_url'  => 'c.url',
-                       ))
-                       ->joinInner(array('pc' => 'posts_counts'), 'p.id = pc.post_id', array(
-                           'count_comments' => 'pc.comments',
-                       ))
-                       ->order('p.time_created DESC');
+            ->setIntegrityCheck(false)
+            ->from(array('p' => $this->_name))
+            ->joinInner(
+                array('c' => 'category'),
+                'c.id = p.category_id',
+                array(
+                    'cat_name' => 'c.name',
+                    'cat_url'  => 'c.url',
+                )
+            )
+            ->joinInner(
+                array('pc' => 'posts_counts'),
+                'p.id = pc.post_id',
+                array(
+                    'count_comments' => 'pc.comments',
+                )
+            )
+            ->order('p.time_created DESC');
 
         if (!Zend_Auth::getInstance()->hasIdentity()) {
             $select->where('p.hide = 0');
         }
 
-		return Zend_Paginator::factory($select);
+        return Zend_Paginator::factory($select);
     }
 
     public function getPostsByCategory($url)
@@ -44,13 +52,13 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
 
         $childArray = array();
         if (isset($rootCategory)) {
-            $childArray[] = (int) $rootCategory;
+            $childArray[] = (int)$rootCategory;
             do {
                 $insert = false;
                 foreach ($categoryArray as $item) {
                     if (!in_array($item['id'], $childArray)) {
                         if (in_array($item['parent_id'], $childArray)) {
-                            $childArray[] = (int) $item['id'];
+                            $childArray[] = (int)$item['id'];
                             $insert = true;
                         }
                     }
@@ -59,17 +67,25 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
         }
 
         $select = $this->select()
-                       ->setIntegrityCheck(false)
-                       ->from(array('p' => $this->_name))
-                       ->joinInner(array('c' => 'category'), 'c.id = p.category_id', array(
-                           'cat_name' => 'c.name',
-                           'cat_url'  => 'c.url',
-                       ))
-                       ->joinInner(array('pc' => 'posts_counts'), 'p.id = pc.post_id', array(
-                           'count_comments' => 'pc.comments',
-                       ))
-                       ->where('p.hide = 0')
-                       ->order('p.time_created DESC');
+            ->setIntegrityCheck(false)
+            ->from(array('p' => $this->_name))
+            ->joinInner(
+                array('c' => 'category'),
+                'c.id = p.category_id',
+                array(
+                    'cat_name' => 'c.name',
+                    'cat_url'  => 'c.url',
+                )
+            )
+            ->joinInner(
+                array('pc' => 'posts_counts'),
+                'p.id = pc.post_id',
+                array(
+                    'count_comments' => 'pc.comments',
+                )
+            )
+            ->where('p.hide = 0')
+            ->order('p.time_created DESC');
 
         if (count($childArray)) {
             $select->where('c.id IN (?)', $childArray);
@@ -77,78 +93,104 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
             $select->where('c.url = ?', $url);
         }
 
-		return Zend_Paginator::factory($select);
+        return Zend_Paginator::factory($select);
     }
 
     public function getPostsByTag($url)
     {
         $select = $this->select()
-                       ->setIntegrityCheck(false)
-                       ->from(array('p' => $this->_name))
-                       ->joinInner(array('c' => 'category'), 'c.id = p.category_id', array(
-                           'cat_name' => 'c.name',
-                           'cat_url'  => 'c.url',
-                       ))
-                       ->joinInner(array('pc' => 'posts_counts'), 'p.id = pc.post_id', array(
-                           'count_comments' => 'pc.comments',
-                       ))
-                       ->joinInner(array('rtt' => 'relation_topictag'), 'p.id = rtt.post_id', array())
-                       ->joinInner(array('t' => 'tags'), 't.id = rtt.tag_id', array())
-                       ->where('p.hide = 0')
-                       ->where('t.url = ?', $url)
-                       ->order('p.time_created DESC');
+            ->setIntegrityCheck(false)
+            ->from(array('p' => $this->_name))
+            ->joinInner(
+                array('c' => 'category'),
+                'c.id = p.category_id',
+                array(
+                    'cat_name' => 'c.name',
+                    'cat_url'  => 'c.url',
+                )
+            )
+            ->joinInner(
+                array('pc' => 'posts_counts'),
+                'p.id = pc.post_id',
+                array(
+                    'count_comments' => 'pc.comments',
+                )
+            )
+            ->joinInner(array('rtt' => 'relation_topictag'), 'p.id = rtt.post_id', array())
+            ->joinInner(array('t' => 'tags'), 't.id = rtt.tag_id', array())
+            ->where('p.hide = 0')
+            ->where('t.url = ?', $url)
+            ->order('p.time_created DESC');
 
-		return Zend_Paginator::factory($select);
+        return Zend_Paginator::factory($select);
     }
 
     public function getPostById($id)
     {
         $select = $this->select()
-                       ->setIntegrityCheck(false)
-                       ->from(array('p' => $this->_name))
-                       ->joinInner(array('c' => 'category'), 'c.id = p.category_id', array(
-                           'cat_name' => 'c.name',
-                           'cat_url'  => 'c.url',
-                       ))
-                       ->joinInner(array('pc' => 'posts_counts'), 'p.id = pc.post_id', array(
-                           'count_comments' => 'pc.comments',
-                       ))
-                       ->where('p.hide = 0')
-                       ->where('p.id = ?', $id);
+            ->setIntegrityCheck(false)
+            ->from(array('p' => $this->_name))
+            ->joinInner(
+                array('c' => 'category'),
+                'c.id = p.category_id',
+                array(
+                    'cat_name' => 'c.name',
+                    'cat_url'  => 'c.url',
+                )
+            )
+            ->joinInner(
+                array('pc' => 'posts_counts'),
+                'p.id = pc.post_id',
+                array(
+                    'count_comments' => 'pc.comments',
+                )
+            )
+            ->where('p.hide = 0')
+            ->where('p.id = ?', $id);
 
-		return $this->fetchRow($select);
+        return $this->fetchRow($select);
     }
 
     public function getPostByUrl($url)
     {
         $select = $this->select()
-                       ->setIntegrityCheck(false)
-                       ->from(array('p' => $this->_name))
-                       ->joinInner(array('c' => 'category'), 'c.id = p.category_id', array(
-                           'cat_name' => 'c.name',
-                           'cat_url'  => 'c.url',
-                       ))
-                       ->joinInner(array('pc' => 'posts_counts'), 'p.id = pc.post_id', array(
-                           'count_comments' => 'pc.comments',
-                       ))
-                       ->where('p.url = ?', $url);
+            ->setIntegrityCheck(false)
+            ->from(array('p' => $this->_name))
+            ->joinInner(
+                array('c' => 'category'),
+                'c.id = p.category_id',
+                array(
+                    'cat_name' => 'c.name',
+                    'cat_url'  => 'c.url',
+                )
+            )
+            ->joinInner(
+                array('pc' => 'posts_counts'),
+                'p.id = pc.post_id', array(
+                    'count_comments' => 'pc.comments',
+                )
+            )
+            ->where('p.url = ?', $url);
 
         if (!Zend_Auth::getInstance()->hasIdentity()) {
             $select->where('p.hide = 0');
         }
 
-		return $this->fetchRow($select);
+        return $this->fetchRow($select);
     }
 
     public function getTopicDataForNavigation($url)
     {
         $select = $this->select()
-                       ->setIntegrityCheck(false)
-                       ->from(array('p' => $this->_name), array('p.url', 'p.title'))
-                       ->joinInner(array('c' => 'category'), 'c.id = p.category_id', array(
-                           'category_url' => 'c.url',
-                       ))
-                       ->where('p.url = ?', $url);
+            ->setIntegrityCheck(false)
+            ->from(array('p' => $this->_name), array('p.url', 'p.title'))
+            ->joinInner(
+                array('c' => 'category'),
+                'c.id = p.category_id', array(
+                    'category_url' => 'c.url',
+                )
+            )
+            ->where('p.url = ?', $url);
 
         return $this->fetchRow($select)->toArray();
     }
@@ -160,20 +202,21 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
 
         $router = Zend_Controller_Front::getInstance()->getRouter();
 
-        $result = array('title'       => $host,
-                        'link'        => BASE_URL . '/',
-                        'description' => $host . ' - последние записи',
-                        'language'    => 'ru-ru',
-                        'charset'     => 'utf-8',
-                        'author'      => 'morontt',
-                        'email'       => 'support@morontt.info',
-                        'generator'   => 'Zend Framework Generator',
-                );
+        $result = array(
+            'title'       => $host,
+            'link'        => BASE_URL . '/',
+            'description' => $host . ' - последние записи',
+            'language'    => 'ru-ru',
+            'charset'     => 'utf-8',
+            'author'      => 'morontt',
+            'email'       => 'support@morontt.info',
+            'generator'   => 'Zend Framework Generator',
+        );
 
         $select = $this->select()
-                       ->where('hide <> 1')
-                       ->order('time_created DESC')
-                       ->limit(25);
+            ->where('hide <> 1')
+            ->order('time_created DESC')
+            ->limit(25);
 
         $topics = $this->fetchAll($select);
 
@@ -185,7 +228,9 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
             list($year, $month, $day, $hour, $min, $sec) = sscanf($topic->time_created, "%d-%d-%d %d:%d:%d");
             $timestamp = mktime($hour, $min, $sec, $month, $day, $year);
 
-            if (empty($lastDate)) $lastDate = $timestamp;
+            if (empty($lastDate)) {
+                $lastDate = $timestamp;
+            }
 
             $linkTopic = $router->assemble(array('url' => $topic->url), 'topic_url', false, true);
 
@@ -219,13 +264,13 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
     public function getSitemapTopic()
     {
         $select = $this->select()
-                       ->from($this->_name, array('url', 'last_update'))
-                       ->where('hide <> 1')
-                       ->order('time_created DESC');
+            ->from($this->_name, array('url', 'last_update'))
+            ->where('hide <> 1')
+            ->order('time_created DESC');
 
         $result = $this->fetchAll($select)->toArray();
 
-		return $result;
+        return $result;
     }
 
     public function createNewTopic($formData)
@@ -276,7 +321,7 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
             $url = Zml_Transform::ruTransform($formData['title']);
 
             $data['title'] = $formData['title'];
-            $data['url']   = $url;
+            $data['url'] = $url;
         }
 
         if ($oldTopic['description'] != $formData['description']) {
@@ -306,7 +351,7 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
     public function getTopicDataForEdit($topicId)
     {
         $select = $this->select()
-                       ->where('id = ?', $topicId);
+            ->where('id = ?', $topicId);
 
         $data = $this->fetchRow($select)->toArray();
 
@@ -321,12 +366,15 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
     {
         $select = $this->select()
             ->setIntegrityCheck(false)
-            ->from(array('p' => $this->_name), array(
-                'id',
-                'title',
-                'url',
-            ))
-            ->joinInner(array('pc' => 'posts_counts'), 'pc.post_id = p.id', array('views'))
+            ->from(
+                array('p' => $this->_name),
+                array('id', 'title', 'url')
+            )
+            ->joinInner(
+                array('pc' => 'posts_counts'),
+                'pc.post_id = p.id',
+                array('views')
+            )
             ->order('views DESC')
             ->limit(6);
 

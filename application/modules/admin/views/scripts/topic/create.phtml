@@ -1,4 +1,11 @@
-<?php $this->headTitle('Новая запись'); ?>
+<?php
+    $this->headTitle('Новая запись');
+
+    $this->headScript()
+        ->appendFile('/js/jquery-ui/jquery-ui.min.js', 'text/javascript', array())
+        ->appendFile('/js/tags_autocomlete.js', 'text/javascript', array());
+    $this->headLink()->appendStylesheet('/js/jquery-ui/themes/base/jquery.ui.all.css');
+?>
 
 <div id="view-content">
     <div class="theme">Создание записи</div>
@@ -7,3 +14,6 @@
         <p>Используйте тег &lt;!-- cut --&gt;, если необходимо отделить краткое описание записи, остальное уйдёт под кат.</p>
     </div>
 </div>
+<script>
+    var availableTags = <?php echo json_encode($this->availableTags); ?>;
+</script>

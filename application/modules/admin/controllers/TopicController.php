@@ -38,6 +38,9 @@ class Admin_TopicController extends Zend_Controller_Action
         $form->submit->setLabel('Создать запись');
         $this->view->form = $form;
 
+        $tags = new Application_Model_Tags();
+        $this->view->availableTags = $tags->getAvailableTags();
+
         if ($this->getRequest()->isPost()) {
             if ($form->isValid($this->getRequest()->getPost())) {
                 $formData = $form->getValues();
@@ -61,14 +64,17 @@ class Admin_TopicController extends Zend_Controller_Action
 
     public function editAction()
     {
-        $id = (int) $this->_getParam('id');
+        $id = (int)$this->_getParam('id');
 
         $topic = new Application_Model_Posts();
 
         $form = new Admin_Form_Topic();
-		$form->submit->setLabel('Изменить запись');
+        $form->submit->setLabel('Изменить запись');
         $this->view->form = $form;
         $this->view->topicId = $id;
+
+        $tags = new Application_Model_Tags();
+        $this->view->availableTags = $tags->getAvailableTags();
 
         if ($this->getRequest()->isPost()) {
             if ($form->isValid($this->getRequest()->getPost())) {
@@ -108,7 +114,7 @@ class Admin_TopicController extends Zend_Controller_Action
 
     public function retwittAction()
     {
-        $id = (int) $this->_getParam('id');
+        $id = (int)$this->_getParam('id');
 
         $topicTable = new Application_Model_Posts();
         $topic = $topicTable->getPostById($id);
