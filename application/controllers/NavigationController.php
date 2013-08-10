@@ -20,25 +20,63 @@ class NavigationController extends Zend_Controller_Action
 
         $twitterBlock = false;
         if (!empty($accessToken) && !in_array(getenv('APPLICATION_ENV'), array('development', 'testing'))) {
-            $token = unserialize($accessToken);
+            $twitterBlock = true;
+        }
 
-            $options = Zend_Registry::get('options');
+        $this->view->twitterBlock = $twitterBlock;
+    }
 
-            $config = $options['twitter'];
-            $config['username'] = $token->getParam('screen_name');
-            $config['accessToken'] = $token;
+    public function twitterAction()
+    {
+        $this->_helper->layout->disableLayout();
 
-            $config['oauthOptions']['consumerKey'] = $config['consumerKey'];
-            $config['oauthOptions']['consumerSecret'] = $config['consumerSecret'];
+        $sysParameters = new Application_Model_SysParameters();
+        $accessToken = $sysParameters->getOption('twitter_token');
 
-            $twitter = new Zend_Service_Twitter($config);
+        $twitterBlock = false;
+        if (!empty($accessToken) && !in_array(getenv('APPLICATION_ENV'), array('development', 'testing'))) {
 
-            $response = $twitter->account->verifyCredentials();
-            if ($response && empty($response->error)) {
+            $cache = Zend_Registry::get('cache');
+            $cacheData = $cache->load('twitter_data');
+            if (!$cacheData) {
+                $token = unserialize($accessToken);
+
+                $options = Zend_Registry::get('options');
+
+                $config = $options['twitter'];
+                $config['username'] = $token->getParam('screen_name');
+                $config['accessToken'] = $token;
+
+                $config['oauthOptions']['consumerKey'] = $config['consumerKey'];
+                $config['oauthOptions']['consumerSecret'] = $config['consumerSecret'];
+
+                $twitter = new Zend_Service_Twitter($config);
+                $response = $twitter->account->verifyCredentials();
+
+                if ($response && empty($response->error)) {
+                    $cacheData = array(
+                        'twitter_block' => true,
+                        'profile_image' => $response->profile_image_url_https,
+                        'screen_name'   => $response->screen_name,
+                        'location'      => $response->location,
+                        'statuses'      => $twitter->statuses->userTimeLine(array('count' => 10)),
+                    );
+                } else {
+                    $cacheData = array(
+                        'twitter_block' => false,
+                    );
+                }
+
+                $cache->save($cacheData, 'twitter_data');
+            }
+
+            if ($cacheData['twitter_block']) {
                 $twitterBlock = true;
 
-                $this->view->twitterResponse = $response;
-                $this->view->twitterStatus = $twitter->statuses->userTimeLine(array('count' => 10));
+                $this->view->screenName = $cacheData['screen_name'];
+                $this->view->location = $cacheData['location'];
+                $this->view->profileImage = $cacheData['profile_image'];
+                $this->view->twitterStatus = $cacheData['statuses'];
             }
         }
 

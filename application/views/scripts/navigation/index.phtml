@@ -89,34 +89,10 @@
     <?php } ?>
 </div>
 <?php if ($this->twitterBlock) { ?>
-<div id="twitter-header">
-    <img src="<?php echo $this->twitterResponse->profile_image_url_https; ?>" alt="" width="32" height="32" />
-    <div class="desc">
-        <a href="https://twitter.com/intent/user?screen_name=<?php echo $this->twitterResponse->screen_name; ?>">@<?php echo $this->twitterResponse->screen_name; ?></a><br/>
-        <?php echo $this->twitterResponse->location; ?>
-    </div>
-    <div class="clear-left"></div>
-</div>
-<div id="twitter-status-list">
-    <?php
-        $twittCount = 0;
-        foreach ($this->twitterStatus->toValue() as $status) {
-            $dateTime = date_create_from_format('D M d H:i:s O Y', $status->created_at);
-            if ($twittCount == 5) {
-                break;
-            }
-            $twittCount++;
-    ?>
-    <div class="twitter-status">
-        <?php echo $this->twitterText($status->text); ?>
-        <a class="twitter_time" href="https://twitter.com/<?php
-            echo $this->twitterResponse->screen_name;
-        ?>/status/<?php echo $status->id; ?>"><?php echo date_format($dateTime, 'd.m.Y'); ?></a>
-    </div>
-    <?php } ?>
-</div>
-<div id="twitter-footer">
-    <a href="https://twitter.com"><img src="<?php echo IMG_DOMAIN; ?>/twitter_bird.png" alt=""/></a>
-    <span><a href="https://twitter.com/<?php echo $this->twitterResponse->screen_name; ?>">Присоединяйтесь</a></span>
-</div>
+    <div id="twitter-wrap"></div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#twitter-wrap').load('<?php echo $this->url(array(), 'sidebar_twitter'); ?>');
+        });
+    </script>
 <?php } ?>
