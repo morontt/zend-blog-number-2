@@ -13,6 +13,7 @@ Setting Up Your VHOST
 
 The following is a sample VHOST you might want to consider for your project.
 
+```html
 <VirtualHost *:80>
     DocumentRoot "/path/to/project-dir/httpdocs/www"
     ServerName zendblog-2.loc
@@ -31,7 +32,9 @@ The following is a sample VHOST you might want to consider for your project.
     </Directory>
 
 </VirtualHost>
+```
 
+```html
 <VirtualHost *:80>
     DocumentRoot "/path/to/project-dir/httpdocs/img"
     ServerName img.zendblog-2.loc
@@ -49,16 +52,17 @@ The following is a sample VHOST you might want to consider for your project.
     </Directory>
 
 </VirtualHost>
+```
 
 YUI Compressor
 ==============
 
-java -jar bin/yuicompressor.jar www/css/main.css -o www/css/main.min.css --charset utf-8
-java -jar bin/yuicompressor.jar www/css/all.css -o www/css/all.min.css --charset utf-8
+* java -jar bin/yuicompressor.jar www/css/main.css -o www/css/main.min.css --charset utf-8
+* java -jar bin/yuicompressor.jar www/css/all.css -o www/css/all.min.css --charset utf-8
 
 Cronjobs
 ========
 
-php cronjobs/grabberAvatar.php  --env development
-php cronjobs/spoolsend.php
-php cronjobs/trackingArchive.php  --env development
+* php cronjobs/grabberAvatar.php  --env development
+* php cronjobs/spoolsend.php
+* php cronjobs/trackingArchive.php  --env development
