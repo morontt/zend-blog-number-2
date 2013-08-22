@@ -22,7 +22,7 @@ The following is a sample VHOST you might want to consider for your project.
     CustomLog "/path/to/project-dir/logs/access.txt" common
 
     <Directory "/path/to/project-dir/httpdocs/www">
-	  DirectoryIndex index.php index.html
+      DirectoryIndex index.php index.html
       Options FollowSymLinks
       Options -Indexes
       AllowOverride All
@@ -41,7 +41,7 @@ The following is a sample VHOST you might want to consider for your project.
     CustomLog "/path/to/project-dir/logs/access.txt" common
 
     <Directory "/path/to/project-dir/httpdocs/img">
-	  DirectoryIndex index.php index.html
+      DirectoryIndex index.php index.html
       Options FollowSymLinks
       AllowOverride All
       Order deny,allow
