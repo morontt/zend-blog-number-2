@@ -11,6 +11,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             'lifetime'                => $options['cache']['lifetime'],
             'automatic_serialization' => true,
             'caching'                 => $options['cache']['caching'],
+            'cache_id_prefix'         => 'zb2_',
         );
         $backendOptions = array(
             'cache_dir'         => realpath(__DIR__ . '/../cache'),
