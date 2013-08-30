@@ -10,7 +10,11 @@ class Application_Model_TrackingAgent extends Zend_Db_Table_Abstract
 
     public function getAgent()
     {
-        $userAgent = substr($_SERVER['HTTP_USER_AGENT'], 0, 255);
+        if (isset($_SERVER['HTTP_USER_AGENT'])) {
+            $userAgent = substr($_SERVER['HTTP_USER_AGENT'], 0, 255);
+        } else {
+            $userAgent = 'unknown';
+        }
 
         $select = $this->select()
             ->where('user_agent LIKE ?', $userAgent);
