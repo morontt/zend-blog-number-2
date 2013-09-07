@@ -13,14 +13,22 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             'caching'                 => $options['cache']['caching'],
             'cache_id_prefix'         => 'zb2_',
         );
-        $backendOptions = array(
-            'cache_dir'         => realpath(__DIR__ . '/../cache'),
-            'read_control_type' => 'adler32',
-        );
-        $cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
+
+        if ($options['cache']['type'] == "apc") {
+            $backendType = 'Apc';
+            $backendOptions = array();
+        } else {
+            $backendType = 'File';
+            $backendOptions = array(
+                'cache_dir'         => realpath(__DIR__ . '/../cache'),
+                'read_control_type' => 'adler32',
+            );
+        }
+
+        $cache = Zend_Cache::factory('Core', $backendType, $frontendOptions, $backendOptions);
         Zend_Registry::set('cache', $cache);
 
-        $cacheOutput = Zend_Cache::factory('Output', 'File', $frontendOptions, $backendOptions);
+        $cacheOutput = Zend_Cache::factory('Output', $backendType, $frontendOptions, $backendOptions);
         Zend_Registry::set('cacheOutput', $cacheOutput);
 
         Zend_Db_Table_Abstract::setDefaultMetadataCache($cache);
