@@ -160,6 +160,10 @@ footer a {
 }
 .ym-col1 article .text-post p {
     margin-bottom: 0.75em;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
 }
 a.ext:after {
     content: "↵";
