@@ -513,54 +513,65 @@ section#comments .comment-header a:after {
     text-align: right;
     font-size: 9pt;
 }
-#social-buttons {
-    background: url('/img/background/bg-header.png') repeat;
-    padding: 7px;
-    height: 32px;
-    color: #FFF;
-    -webkit-border-radius: 0.3em;
-    -moz-border-radius: 0.3em;
-    border-radius: 0.3em;
-    margin-bottom: 15px;
-    text-align: center;
+.ym-hlist {
+    min-height: 48px;
 }
-#social-buttons a {
+#social-links {
+    height: 32px;
+    position: absolute;
+    top: 8px;
+    right: 34px;
+}
+#social-links a {
     display: inline-block;
-    background: url('/img/buttons_pics.png') no-repeat;
+    background: url('/img/flat_button.png') no-repeat;
     width: 32px;
     height: 32px;
     text-indent: 64px;
     overflow: hidden;
 }
-#social-buttons a.s-rss {
+#social-links a.s-rss {
+    background-position: -170px 0;
+}
+#social-links a.s-fcb {
     background-position: 0 0;
 }
-#social-buttons a.s-fcb {
-    background-position: -47px 0;
+#social-links a.s-twt {
+    background-position: -204px 0;
 }
-#social-buttons a.s-twt {
-    background-position: -95px 0;
+#social-links a.s-ins {
+    background-position: -102px 0;
 }
-#social-buttons a.s-ins {
-    background-position: -143px 0;
+#social-links a.s-lj {
+    background-position: -136px 0;
 }
-#social-buttons a.s-lj {
-    background-position: -191px 0;
+
+#social-links a.s-git {
+    background-position: -34px 0;
 }
-#social-buttons a.s-rss:hover {
-    background-position: 0 -47px;
+#social-links a.s-gp {
+    background-position: -68px 0;
 }
-#social-buttons a.s-fcb:hover {
-    background-position: -47px -47px;
+#social-links a.s-rss:hover {
+    background-position: -170px -34px;
 }
-#social-buttons a.s-twt:hover {
-    background-position: -95px -47px;
+#social-links a.s-fcb:hover {
+    background-position: 0 -34px;
 }
-#social-buttons a.s-ins:hover {
-    background-position: -143px -47px;
+#social-links a.s-twt:hover {
+    background-position: -204px -34px;
 }
-#social-buttons a.s-lj:hover {
-    background-position: -191px -47px;
+#social-links a.s-ins:hover {
+    background-position: -102px -34px;
+}
+#social-links a.s-lj:hover {
+    background-position: -136px -34px;
+}
+#social-links a.s-git:hover {
+    background-position: -34px -34px;
+}
+#social-links a.s-gp:hover {
+    background-position: -68px -34px;
 }
 .text-post #chart_container img {
     margin-top: 0;

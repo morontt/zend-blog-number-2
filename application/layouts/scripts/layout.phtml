@@ -26,7 +26,7 @@
         'href'  => BASE_URL . '/feed/atom',
         'type'  => 'application/atom+xml',
     ));
-    $this->headLink()->prependStylesheet('/css/main_20130907.min.css')
+    $this->headLink()->prependStylesheet('/css/main_20130908.min.css')
         ->prependStylesheet('/css/yaml/core/iehacks.min.css', 'screen', 'lte IE 7')
         //->appendStylesheet('/js/syntaxhighlighter/style/shCoreRDark.css')
         //->appendStylesheet('/js/syntaxhighlighter/style/shThemeRDark.css')
@@ -105,7 +105,18 @@
                         echo $this->action('menu', 'navigation', null, array()) . PHP_EOL;
                         $cacheOutput->end();
                     }
+
+                    $options = Zend_Registry::get('options');
                 ?>
+                <div id="social-links">
+                    <a class="s-rss" href="<?php echo BASE_URL; ?>/feed/rss" title="RSS">rss</a>
+                    <a class="s-fcb" href="<?php echo $options['social_link']['facebook']; ?>" title="facebook">facebook</a>
+                    <a class="s-twt" href="<?php echo $options['social_link']['twitter']; ?>" title="twitter">twitter</a>
+                    <a class="s-ins" href="<?php echo $options['social_link']['instagram']; ?>" title="instagram">instagram</a>
+                    <a class="s-lj" href="<?php echo $options['social_link']['livejournal']; ?>" title="livejournal">livejournal</a>
+                    <a class="s-git" href="<?php echo $options['social_link']['github']; ?>" title="github">github</a>
+                    <a class="s-gp" href="<?php echo $options['social_link']['googleplus']; ?>" title="google+">google+</a>
+                </div>
             </div>
         </div>
     </nav>
