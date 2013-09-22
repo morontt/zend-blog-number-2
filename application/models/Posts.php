@@ -199,6 +199,7 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
     {
         $request = Zend_Controller_Front::getInstance()->getRequest();
         $host = $request->getHttpHost();
+        $options = Zend_Registry::get('options');
 
         $router = Zend_Controller_Front::getInstance()->getRouter();
 
@@ -209,7 +210,7 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
             'language'    => 'ru-ru',
             'charset'     => 'utf-8',
             'author'      => 'morontt',
-            'email'       => 'support@morontt.info',
+            'email'       => $options['sys_parameters']['mail'],
             'generator'   => 'Zend Framework Generator',
         );
 
@@ -383,4 +384,3 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
         return $dataArray;
     }
 }
-

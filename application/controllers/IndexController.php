@@ -57,7 +57,7 @@ class IndexController extends Zend_Controller_Action
             foreach ($paginator as $item) {
                 $topicUrl = $item->url;
             }
-            $this->_redirect($this->view->url(array('url' => $topicUrl), 'topic_url', true));
+            $this->redirect($this->view->url(array('url' => $topicUrl), 'topic_url', true));
         }
 
         $category = new Application_Model_Category();
@@ -97,7 +97,7 @@ class IndexController extends Zend_Controller_Action
             foreach ($paginator as $item) {
                 $topicUrl = $item->url;
             }
-            $this->_redirect($this->view->url(array('url' => $topicUrl), 'topic_url', true));
+            $this->redirect($this->view->url(array('url' => $topicUrl), 'topic_url', true));
         }
 
         $tags = new Application_Model_Tags();
@@ -133,7 +133,7 @@ class IndexController extends Zend_Controller_Action
             $post = $postsTable->getPostById($id);
             if ($post) {
                 $postUrl = $this->view->url(array('url' => $post->url), 'topic_url', true);
-                $this->_redirect($postUrl, array('code' => 301));
+                $this->redirect($postUrl, array('code' => 301));
             } else {
                 $this->_redirect404();
             }
@@ -146,7 +146,7 @@ class IndexController extends Zend_Controller_Action
             } else {
                 if (preg_match('/\/$/', $this->_request->getRequestUri())) {
                     $postUrl = $this->view->url(array('url' => $url), 'topic_url', true);
-                    $this->_redirect($postUrl, array('code' => 301));
+                    $this->redirect($postUrl, array('code' => 301));
                 }
             }
         }
@@ -202,7 +202,7 @@ class IndexController extends Zend_Controller_Action
             $spam->savePostData($this->getRequest()->getPost());
         }
 
-        $this->_redirect('/');
+        $this->redirect('/');
     }
 
     public function ajaxaddcommentAction()

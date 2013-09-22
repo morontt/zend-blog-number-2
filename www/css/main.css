@@ -655,3 +655,9 @@ section#comments .comment-header a:after {
     opacity: 0.25;
     display: none;
 }
+#dis_comm {
+    border: 2px solid #8DA246;
+    border-radius: 0.4em;
+    margin-bottom: 1.2em;
+    padding: 0.6em 1em;
+}
