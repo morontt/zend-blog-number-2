@@ -657,6 +657,10 @@ section#comments .comment-header a:after {
 }
 #dis_comm {
     border: 2px solid #8DA246;
+    background: #F5F8E9;
+    background: rgba(255, 255, 255, 0.7);
+    -webkit-border-radius: 0.4em;
+    -moz-border-radius: 0.4em;
     border-radius: 0.4em;
     margin-bottom: 1.2em;
     padding: 0.6em 1em;

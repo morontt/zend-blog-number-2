@@ -28,13 +28,13 @@ if (count($this->posts)) {
             if ($countComments) {
                 ?>
                 <div class="count_comments">
-                    <a href="<?php echo $topicUrl; ?>#comments">
+                    <a href="<?php echo $topicUrl; ?>#dis_comm">
                         <?php echo $this->commentsCountString($countComments); ?>
                     </a>
                 </div>
         <?php } else { ?>
                 <div class="count_comments">
-                    <a href="<?php echo $topicUrl; ?>#comments">Оставить комментарий</a>
+                    <a href="<?php echo $topicUrl; ?>#dis_comm">Оставить комментарий</a>
                 </div>
         <?php } ?>
         </article>
