@@ -10,7 +10,8 @@
     }
 ?><div class="comment-item"<?php echo $style; ?>>
 <div class="comment-header">
-<time datetime="<?php echo $this->viewDateTime($this->comment['time_created'], DateTime::W3C); ?>"><?php echo $this->viewDateTime($this->comment['time_created']); ?></time>
+<time datetime="<?php echo $this->viewDateTime($this->comment['time_created'], DateTime::W3C); ?>"><?php
+    echo $this->viewDateTime($this->comment['time_created']); ?></time>
 <?php
     if ($this->comment['username']) {
         echo $this->comment['username'];

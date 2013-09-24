@@ -3,7 +3,7 @@
 class Application_View_Helper_TopicPreview extends Zend_View_Helper_Abstract
 {
     public function topicPreview($topic, $url)
-	{
+    {
         $preview = explode('<!-- cut -->',$topic);
         $newTopic = $preview[0];
 
