@@ -1,0 +1,1 @@
+ALTER TABLE `comments` ADD `disqus_id` INT DEFAULT NULL;
