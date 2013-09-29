@@ -33,6 +33,7 @@ $configObject = new Zend_Config_Ini(realpath(dirname(__FILE__) . '/../applicatio
 $dbOptions = $configObject->resources->db;
 
 $db = Zend_Db::factory($dbOptions);
+Zend_Db_Table_Abstract::setDefaultAdapter($db);
 
 $disqusOptions = $configObject->disqus;
 
@@ -51,17 +52,23 @@ $disqusPosts = $disqus->forums->listPosts(
 $comments = array();
 foreach ($disqusPosts as $item) {
     $comment = array(
-        'id' => $item->id,
+        'id' => (int) $item->id,
         'parent' => $item->parent,
-        'thread' => $item->thread,
+        'thread' => (int) $item->thread,
         'message' => $item->raw_message,
         'created' => $item->createdAt,
         'author' => array(
             'name' => $item->author->name,
-            //'mail' => $item->author->email,
-            'mailHash' => $item->author->emailHash,
+            'emailHash' => $item->author->emailHash,
             'website' => $item->author->url,
+            'id' => (int) $item->author->id,
         ),
     );
     $comments[] = $comment;
+}
+
+require_once('Commentators.php');
+$commentatorsTable = new Application_Model_Commentators();
+foreach ($comments as $key => $comment) {
+    $comments[$key]['commentator_id'] = $commentatorsTable->getDisqusAuthor($comment['author']);
 }

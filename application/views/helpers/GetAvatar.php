@@ -16,8 +16,10 @@ class Application_View_Helper_GetAvatar extends Zend_View_Helper_Abstract
             $hash         = md5(strtolower(trim($comment['user_mail'])));
             $indexDefault = ($comment['user_id']) % $countArray;
         } else {
-            $hash = Application_Model_Commentators::getAvatarHash($comment['name'],
-                $comment['mail'], $comment['website']
+            $hash = Application_Model_Commentators::getAvatarHash(
+                $comment['name'],
+                $comment['mail'],
+                $comment['website']
             );
             $indexDefault = ($comment['commentator_id']) % $countArray;
         }

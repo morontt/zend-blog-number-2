@@ -12,20 +12,22 @@ class Application_Model_Commentators extends Zend_Db_Table_Abstract
      * @param string $name
      * @param string $mail
      * @param string $website
-     * @return int
+     * @param string|null $emailHash
+     * @param integer|null $disqusId
+     * @return integer
      */
-    public function getCommentatorId($name, $mail = null, $website = null)
+    public function getCommentatorId($name, $mail, $website, $emailHash = null, $disqusId = null)
     {
         $select = $this->select()
-                       ->where('name = ?', $name);
+            ->where('name = ?', $name);
 
-        if (isset($mail) && !is_null($mail) && $mail) {
+        if ($mail && trim($mail)) {
             $select->where('mail = ?', $mail);
         } else {
             $select->where('mail IS NULL');
         }
 
-        if (isset($website) && !is_null($website) && $website) {
+        if ($website && trim($website)) {
             $select->where('website = ?', $website);
         } else {
             $select->where('website IS NULL');
@@ -38,11 +40,17 @@ class Application_Model_Commentators extends Zend_Db_Table_Abstract
             $data = array(
                 'name' => $name,
             );
-            if (isset($mail) && !is_null($mail) && $mail) {
+            if ($mail && trim($mail)) {
                 $data['mail'] = $mail;
             }
-            if (isset($website) && !is_null($website) && $website) {
+            if ($website && trim($website)) {
                 $data['website'] = $website;
+            }
+            if ($emailHash) {
+                $data['email_hash'] = $emailHash;
+            }
+            if ($disqusId) {
+                $data['disqus_id'] = $disqusId;
             }
 
             $result = $this->insert($data);
@@ -60,7 +68,7 @@ class Application_Model_Commentators extends Zend_Db_Table_Abstract
     public function getByHash($hash)
     {
         $select = $this->select()
-                       ->where("MD5(CONCAT('" . self::HASH_SALT . "', id)) = ?", $hash);
+            ->where("MD5(CONCAT('" . self::HASH_SALT . "', id)) = ?", $hash);
 
         return $this->fetchRow($select);
     }
@@ -111,5 +119,30 @@ class Application_Model_Commentators extends Zend_Db_Table_Abstract
             ->limit($limit);
 
         return $this->fetchAll($select)->toArray();
+    }
+
+    /**
+     * @param array $author
+     * @return integer
+     */
+    public function getDisqusAuthor(array $author)
+    {
+        $select = $this->select()
+            ->where('disqus_id = ?', $author['id']);
+
+        $commentator = $this->fetchRow($select);
+        if ($commentator) {
+            $result = $commentator->id;
+        } else {
+            $result = $this->getCommentatorId(
+                $author['name'],
+                null,
+                $author['website'],
+                $author['emailHash'],
+                $author['id']
+            );
+        }
+
+        return $result;
     }
 }
