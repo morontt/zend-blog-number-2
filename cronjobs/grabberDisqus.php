@@ -29,7 +29,7 @@ if (isset($optsObject->env)) {
     $environment = 'production';
 }
 
-$configObject = new Zend_Config_Ini(realpath(dirname(__FILE__) . '/../application/configs/application.ini'), $environment);
+$configObject = new Zend_Config_Ini(realpath(__DIR__ . '/../application/configs/application.ini'), $environment);
 $dbOptions = $configObject->resources->db;
 
 $db = Zend_Db::factory($dbOptions);
@@ -50,6 +50,7 @@ $disqusPosts = $disqus->forums->listPosts(
 );
 
 $comments = array();
+$threads = array();
 foreach ($disqusPosts as $item) {
     $comment = array(
         'id' => (int) $item->id,
@@ -65,10 +66,30 @@ foreach ($disqusPosts as $item) {
         ),
     );
     $comments[] = $comment;
+    $threads[] = $comment['thread'];
 }
+$threads = array_unique($threads);
 
 require_once('Commentators.php');
 $commentatorsTable = new Application_Model_Commentators();
 foreach ($comments as $key => $comment) {
     $comments[$key]['commentator_id'] = $commentatorsTable->getDisqusAuthor($comment['author']);
+}
+
+require_once('Posts.php');
+require_once('Row/Post.php');
+$postsTable = new Application_Model_Posts();
+$postsArray = $postsTable->getPostsByDisqusThreads($threads);
+
+if (!empty($postsArray['unknown'])) {
+    $disqusThreads = $disqus->forums->listThreads(
+        array(
+            'forum' => $disqusOptions->shortname,
+            'thread' => $threads,
+        )
+    );
+
+    $postsTable->saveDisqusThreads($disqusThreads);
+
+    $postsArray = $postsTable->getPostsByDisqusThreads($threads);
 }

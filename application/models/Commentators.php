@@ -46,11 +46,14 @@ class Application_Model_Commentators extends Zend_Db_Table_Abstract
             if ($website && trim($website)) {
                 $data['website'] = $website;
             }
-            if ($emailHash) {
-                $data['email_hash'] = $emailHash;
-            }
             if ($disqusId) {
                 $data['disqus_id'] = $disqusId;
+            }
+
+            if ($emailHash) {
+                $data['email_hash'] = $emailHash;
+            } else {
+                $data['email_hash'] = self::getAvatarHash($name, $mail, $website);
             }
 
             $result = $this->insert($data);
