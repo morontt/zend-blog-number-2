@@ -42,17 +42,25 @@ $owner = $usersTable->getUserByEmailHash($ownerHash);
 
 $disqusOptions = $configObject->disqus;
 
+require_once('Comments.php');
+$commentsTable = new Application_Model_Comments();
+
+$lastCommentTimestamp = $commentsTable->getLastDisqusTimestamp();
+
 require_once(realpath(__DIR__ . '/../library/disqusapi/disqusapi.php'));
 
 $disqus = new DisqusAPI($disqusOptions->secretKey);
 
-$disqusPosts = $disqus->forums->listPosts(
-    array(
-        'forum' => $disqusOptions->shortname,
-        'limit' => 100,
-        'order' => 'asc',
-    )
+$requestOptions = array(
+    'forum' => $disqusOptions->shortname,
+    'limit' => 100,
+    'order' => 'asc',
 );
+if ($lastCommentTimestamp) {
+    $requestOptions['since'] = $lastCommentTimestamp;
+}
+
+$disqusPosts = $disqus->forums->listPosts($requestOptions);
 
 $comments = array();
 $threads = array();
@@ -100,7 +108,5 @@ if (!empty($comments)) {
         $postsArray = $postsTable->getPostsByDisqusThreads($threads);
     }
 
-    require_once('Comments.php');
-    $commentsTable = new Application_Model_Comments();
     $commentsTable->saveDisqusComments($comments, $postsArray, $ownerHash, $owner->id);
 }

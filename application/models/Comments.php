@@ -240,4 +240,28 @@ class Application_Model_Comments extends Zend_Db_Table_Abstract
         return $result;
     }
 
+    /**
+     * @return integer|null
+     */
+    public function getLastDisqusTimestamp()
+    {
+        $select = $this->select()
+            ->from(array('c' => $this->_name), array(
+                'c.id',
+                'c.time_created',
+            ))
+            ->where('c.disqus_id IS NOT NULL')
+            ->order('c.id DESC')
+            ->limit(1);
+
+        $comment = $this->fetchRow($select);
+        $result = null;
+        if ($comment) {
+            $dateTime = date_create_from_format('Y-m-d H:i:s', $comment->time_created);
+
+            $result = (int) $dateTime->format('U');
+        }
+
+        return $result;
+    }
 }
