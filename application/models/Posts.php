@@ -383,4 +383,49 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
 
         return $dataArray;
     }
+
+    /**
+     * @param array $threads
+     * @return array
+     */
+    public function getPostsByDisqusThreads(array $threads)
+    {
+        $select = $this->select()
+            ->from(array('p' => $this->_name), array('p.id', 'p.disqus_thread'))
+            ->where('p.disqus_thread IN (?)', $threads);
+
+        $dataArray = $this->fetchAll($select);
+
+        $result = array();
+        foreach ($dataArray as $item) {
+            $result[$item->disqus_thread] = $item->id;
+        }
+
+        $unknownThreads = array();
+        foreach ($threads as $item) {
+            if (!isset($result[$item])) {
+                $unknownThreads[] = $item;
+            }
+        }
+
+        $result['unknown'] = $unknownThreads;
+
+        return $result;
+    }
+
+    /**
+     * @param array $disqusThreads
+     */
+    public function saveDisqusThreads(array $disqusThreads)
+    {
+        foreach ($disqusThreads as $item) {
+            $url = str_replace('/article/', '', $item->identifiers[0]);
+
+            $post = $this->fetchRow($this->select()->where('url = ?', $url));
+            if ($post) {
+                $post->disqus_thread = $item->id;
+                $post->save();
+            }
+        }
+    }
 }
