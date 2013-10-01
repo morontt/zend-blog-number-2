@@ -22,9 +22,10 @@ class Application_Model_Comments extends Zend_Db_Table_Abstract
                 't.name',
                 't.mail',
                 't.website',
+                't.email_hash',
             ))
             ->joinLeft(array('u' => 'users'), 'c.user_id = u.id', array(
-                'user_mail' => 'u.mail',
+                'user_email_hash' => 'u.email_hash',
                 'u.username',
             ))
             ->where('c.post_id = ?', $id)
