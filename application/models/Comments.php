@@ -108,6 +108,76 @@ class Application_Model_Comments extends Zend_Db_Table_Abstract
     }
 
     /**
+     * @param array $comments
+     * @param array $postsArray
+     * @param string $ownerHash
+     * @param integer $userId
+     */
+    public function saveDisqusComments(array $comments, array $postsArray, $ownerHash, $userId)
+    {
+        $filter = new Zend_Filter_StripTags(array(
+            'allowTags'    => array('a', 's', 'b', 'i', 'em', 'strong', 'img'),
+            'allowAttribs' => array('src', 'href', 'class', 'id'),
+        ));
+
+        foreach ($comments as $comment) {
+            if (isset($postsArray[$comment['thread']])) {
+
+                $existComment = $this->getCommentByDisqusId($comment['id']);
+
+                if (!$existComment) {
+                    $dateTime = date_create_from_format(
+                        'Y-m-d\TH:i:s',
+                        $comment['created'],
+                        new DateTimeZone('UTC')
+                    );
+                    $dateTime->setTimezone(new DateTimeZone(date_default_timezone_get()));
+
+                    $dataArray = array(
+                        'post_id'       => $postsArray[$comment['thread']],
+                        'text'          => $filter->filter($comment['message']),
+                        'time_created'  => $dateTime->format('Y-m-d H:i:s'),
+                        'disqus_id'     => $comment['id'],
+                    );
+
+                    if ($comment['author']['emailHash'] == $ownerHash) {
+                        $dataArray['user_id'] = $userId;
+                    } else {
+                        $dataArray['commentator_id'] = $comment['commentator_id'];
+                    }
+
+                    if ($comment['parent']) {
+                        $parentComment = $this->getCommentByDisqusId($comment['parent']);
+                        if ($parentComment) {
+                            $dataArray['parent_id'] = $parentComment->id;
+                        }
+                    }
+
+                    $this->insert($dataArray);
+                }
+            }
+        }
+
+        foreach ($postsArray as $key => $value) {
+            if ($key != 'unknown') {
+                $this->getAdapter()->query("CALL update_comments_count({$value})");
+            }
+        }
+    }
+
+    /**
+     * @param integer $disqusId
+     * @return Zend_Db_Table_Row_Abstract|null
+     */
+    public function getCommentByDisqusId($disqusId)
+    {
+        $select = $this->select()
+            ->where('disqus_id = ?', $disqusId);
+
+        return $this->fetchRow($select);
+    }
+
+    /**
      * get count comments by topic_id
      *
      * @param integer $topicId

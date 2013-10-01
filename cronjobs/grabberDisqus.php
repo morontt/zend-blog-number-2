@@ -35,6 +35,11 @@ $dbOptions = $configObject->resources->db;
 $db = Zend_Db::factory($dbOptions);
 Zend_Db_Table_Abstract::setDefaultAdapter($db);
 
+require_once('Users.php');
+$ownerHash = md5(strtolower(trim($configObject->sys_parameters->mail)));
+$usersTable = new Application_Model_Users();
+$owner = $usersTable->getUserByEmailHash($ownerHash);
+
 $disqusOptions = $configObject->disqus;
 
 require_once(realpath(__DIR__ . '/../library/disqusapi/disqusapi.php'));
@@ -70,26 +75,32 @@ foreach ($disqusPosts as $item) {
 }
 $threads = array_unique($threads);
 
-require_once('Commentators.php');
-$commentatorsTable = new Application_Model_Commentators();
-foreach ($comments as $key => $comment) {
-    $comments[$key]['commentator_id'] = $commentatorsTable->getDisqusAuthor($comment['author']);
-}
+if (!empty($comments)) {
+    require_once('Commentators.php');
+    $commentatorsTable = new Application_Model_Commentators();
+    foreach ($comments as $key => $comment) {
+        $comments[$key]['commentator_id'] = $commentatorsTable->getDisqusAuthor($comment['author']);
+    }
 
-require_once('Posts.php');
-require_once('Row/Post.php');
-$postsTable = new Application_Model_Posts();
-$postsArray = $postsTable->getPostsByDisqusThreads($threads);
-
-if (!empty($postsArray['unknown'])) {
-    $disqusThreads = $disqus->forums->listThreads(
-        array(
-            'forum' => $disqusOptions->shortname,
-            'thread' => $threads,
-        )
-    );
-
-    $postsTable->saveDisqusThreads($disqusThreads);
-
+    require_once('Posts.php');
+    require_once('Row/Post.php');
+    $postsTable = new Application_Model_Posts();
     $postsArray = $postsTable->getPostsByDisqusThreads($threads);
+
+    if (!empty($postsArray['unknown'])) {
+        $disqusThreads = $disqus->forums->listThreads(
+            array(
+                'forum' => $disqusOptions->shortname,
+                'thread' => $threads,
+            )
+        );
+
+        $postsTable->saveDisqusThreads($disqusThreads);
+
+        $postsArray = $postsTable->getPostsByDisqusThreads($threads);
+    }
+
+    require_once('Comments.php');
+    $commentsTable = new Application_Model_Comments();
+    $commentsTable->saveDisqusComments($comments, $postsArray, $ownerHash, $owner->id);
 }
