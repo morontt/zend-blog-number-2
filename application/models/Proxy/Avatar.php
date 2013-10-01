@@ -29,6 +29,4 @@ class Application_Model_Proxy_Avatar extends Application_Model_Avatar
 
         return $cacheData;
     }
-
 }
-

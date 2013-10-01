@@ -64,5 +64,6 @@ Cronjobs
 ========
 
 * php cronjobs/grabberAvatar.php  --env development
+* php cronjobs/grabberDisqus.php  --env development
 * php cronjobs/spoolsend.php
 * php cronjobs/trackingArchive.php  --env development

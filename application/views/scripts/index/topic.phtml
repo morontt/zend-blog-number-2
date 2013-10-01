@@ -78,7 +78,7 @@
         $topicUrl = $this->url(array('url' => $this->post->url), 'topic_url', true);
     ?>
     <script type="text/javascript">
-        var disqus_shortname = '<?php echo $options['disqus_shortname']; ?>';
+        var disqus_shortname = '<?php echo $options['disqus']['shortname']; ?>';
         var disqus_identifier = '<?php echo $topicUrl; ?>';
         var disqus_url = '<?php echo BASE_URL . $topicUrl; ?>';
         var disqus_title = <?php echo json_encode($this->post->title); ?>;
