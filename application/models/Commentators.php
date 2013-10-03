@@ -111,6 +111,7 @@ class Application_Model_Commentators extends Zend_Db_Table_Abstract
                 'name',
                 'mail',
                 'website',
+                'email_hash',
                 'count'     => new Zend_Db_Expr('COUNT( c.id )'),
                 'last_time' => new Zend_Db_Expr('MAX( c.time_created )'),
             ))
