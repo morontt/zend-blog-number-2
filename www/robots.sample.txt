@@ -1,4 +1,2 @@
 User-agent: *
-Disallow: /tag/
-Disallow: /category/
 Sitemap: http://hostname.loc/sitemap.xml
