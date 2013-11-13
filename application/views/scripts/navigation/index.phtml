@@ -72,11 +72,41 @@
     <?php
         if (!in_array(getenv('APPLICATION_ENV'), array('development', 'testing'))) {
             $flagcounterCode = $options['sys_parameters']['flagcounter'];
+            $yandexMetrika = $options['sys_parameters']['yandex_metrika'];
     ?>
-    <a href="http://s09.flagcounter.com/more/<?php echo $flagcounterCode; ?>">
-        <img src="http://s09.flagcounter.com/count/<?php echo $flagcounterCode; ?>/bg_000000/txt_FFFFFF/border_FFFFFF/columns_2/maxflags_8/viewers_3/labels_1/pageviews_1/"
-        alt="free counters" class="no-style"/>
-    </a>
+        <a href="http://s09.flagcounter.com/more/<?php echo $flagcounterCode; ?>">
+            <img src="http://s09.flagcounter.com/count/<?php echo $flagcounterCode; ?>/bg_000000/txt_FFFFFF/border_FFFFFF/columns_2/maxflags_8/viewers_3/labels_1/pageviews_1/"
+            alt="free counters" class="no-style"/>
+        </a>
+        <script>
+            (function (d, w, c) {
+                (w[c] = w[c] || []).push(function() {
+                    try {
+                        w.yaCounter<?php echo $yandexMetrika; ?> = new Ya.Metrika({
+                            id: <?php echo $yandexMetrika; ?>,
+                            trackLinks: true,
+                            accurateTrackBounce: true});
+                    } catch(e) { }
+                });
+
+                var n = d.getElementsByTagName("script")[0],
+                    s = d.createElement("script"),
+                    f = function () { n.parentNode.insertBefore(s, n); };
+                s.type = "text/javascript";
+                s.async = true;
+                s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+                if (w.opera == "[object Opera]") {
+                    d.addEventListener("DOMContentLoaded", f, false);
+                } else { f(); }
+            })(document, window, "yandex_metrika_callbacks");
+        </script>
+        <noscript>
+            <div>
+                <img src="//mc.yandex.ru/watch/<?php echo $yandexMetrika; ?>"
+                     style="position:absolute; left:-9999px;" alt="" />
+            </div>
+        </noscript>
     <?php } else { ?>
         <img src="/img/dev_flagcounter.png" alt="free counters" class="no-style"/>
     <?php } ?>
