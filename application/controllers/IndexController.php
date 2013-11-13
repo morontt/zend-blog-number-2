@@ -53,13 +53,6 @@ class IndexController extends Zend_Controller_Action
             $this->_redirect404();
         }
 
-        if ($paginator->getTotalItemCount() == 1) {
-            foreach ($paginator as $item) {
-                $topicUrl = $item->url;
-            }
-            $this->redirect($this->view->url(array('url' => $topicUrl), 'topic_url', true));
-        }
-
         $category = new Application_Model_Category();
         $currentCategory = $category->getCategoryByUrl($url);
 
@@ -91,13 +84,6 @@ class IndexController extends Zend_Controller_Action
 
         if (count($paginator) < $page || $page < 1) {
             $this->_redirect404();
-        }
-
-        if ($paginator->getTotalItemCount() == 1) {
-            foreach ($paginator as $item) {
-                $topicUrl = $item->url;
-            }
-            $this->redirect($this->view->url(array('url' => $topicUrl), 'topic_url', true));
         }
 
         $tags = new Application_Model_Tags();
