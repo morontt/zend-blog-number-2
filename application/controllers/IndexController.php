@@ -180,14 +180,6 @@ class IndexController extends Zend_Controller_Action
 
     public function addcommentAction()
     {
-        $this->_helper->layout->disableLayout();
-        $this->_helper->viewRenderer->setNoRender(true);
-
-        if ($this->getRequest()->isPost()) {
-            $spam = new Application_Model_Spam();
-            $spam->savePostData($this->getRequest()->getPost());
-        }
-
         $this->redirect('/');
     }
 
