@@ -10,7 +10,7 @@ class AuthController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $this->_redirect($this->view->url(array(), 'login'));
+        $this->redirect($this->view->url(array(), 'login'));
     }
 
     public function loginAction()
@@ -43,7 +43,7 @@ class AuthController extends Zend_Controller_Action
                         'mail',
                     )));
 
-                    $this->_redirect('/');
+                    $this->redirect('/');
                 } else {
                     $this->view->error = true;
                 }
@@ -57,7 +57,7 @@ class AuthController extends Zend_Controller_Action
     {
         Zend_Auth::getInstance()->clearIdentity();
 
-        $this->_redirect($this->view->url(array(), 'login'));
+        $this->redirect($this->view->url(array(), 'login'));
     }
 
 }
