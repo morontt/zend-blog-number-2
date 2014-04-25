@@ -2,7 +2,6 @@
 
 class Application_View_Helper_GetAvatar extends Zend_View_Helper_Abstract
 {
-
     public function getAvatar($comment)
     {
         $defaultsArray = array(
@@ -28,18 +27,6 @@ class Application_View_Helper_GetAvatar extends Zend_View_Helper_Abstract
             $indexDefault = ($comment['commentator_id']) % $countArray;
         }
 
-        $avatarObject = new Application_Model_Proxy_Avatar();
-        $avatarArray = $avatarObject->getByHash($hash, $indexDefault);
-
-        $src = 'http://www.gravatar.com/avatar/' . $hash . '?d=' . $defaultsArray[$indexDefault];
-        if ($avatarArray && $avatarArray['src']) {
-            $fileName = realpath(APPLICATION_PATH . '/../img/avatar') . DIRECTORY_SEPARATOR . $avatarArray['src'];
-            if (file_exists($fileName)) {
-                $src = IMG_DOMAIN . '/avatar/' . $avatarArray['src'];
-            }
-        }
-
-        return $src;
+        return 'http://www.gravatar.com/avatar/' . $hash . '?d=' . $defaultsArray[$indexDefault];
     }
-
 }
