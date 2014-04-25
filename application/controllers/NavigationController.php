@@ -14,16 +14,6 @@ class NavigationController extends Zend_Controller_Action
         $notEmpty = $category->getNotEmptyCategory();
 
         $this->view->category = $notEmpty;
-
-        $sysParameters = new Application_Model_SysParameters();
-        $accessToken = $sysParameters->getOption('twitter_token');
-
-        $twitterBlock = false;
-        if (!empty($accessToken) && !in_array(getenv('APPLICATION_ENV'), array('development', 'testing'))) {
-            $twitterBlock = true;
-        }
-
-        $this->view->twitterBlock = $twitterBlock;
     }
 
     public function twitterAction()

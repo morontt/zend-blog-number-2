@@ -111,11 +111,3 @@
         <img src="/img/dev_flagcounter.png" alt="free counters" class="no-style"/>
     <?php } ?>
 </div>
-<?php if ($this->twitterBlock) { ?>
-    <div id="twitter-wrap"></div>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#twitter-wrap').load('<?php echo $this->url(array(), 'sidebar_twitter'); ?>');
-        });
-    </script>
-<?php } ?>
