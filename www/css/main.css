@@ -53,12 +53,12 @@ body {
 }
 
 header {
-    background: url('/img/background/bg-header.png') repeat;
+    background: #859C40;
 }
 
 header .ym-wbox {
     position: relative;
-    background: url('/img/logo_256.png') right center no-repeat;
+    background: url('/img/logo_ant.png') right center no-repeat;
     background-size: contain;
 }
 
@@ -87,7 +87,7 @@ footer a {
 }
 
 .category-list-header {
-    background: url('/img/background/bg-header.png') repeat;
+    background: #859C40;
     padding: 5px 0 5px 1.5em;
     color: #FFF;
     -webkit-border-radius: 0.3em 0.3em 0 0;
@@ -420,9 +420,7 @@ section#comments .comment-header a:after {
 }
 
 #comment_add .required {
-    background-image: url("/img/req_asterisk.png");
-    background-repeat: no-repeat;
-    background-position: left center;
+    background: url("/img/req_asterisk.png") no-repeat left center;
     padding-left: 24px;
 }
 
@@ -446,10 +444,7 @@ section#comments .comment-header a:after {
 }
 
 #comments #noscript {
-    background-color: #000;
-    background-image: url("/img/req_asterisk.png");
-    background-position: 10px 50%;
-    background-repeat: no-repeat;
+    background: #000 url("/img/req_asterisk.png") no-repeat 10px 50%;
     color: #FFF;
     border: 1px solid #FFFFFF;
     margin: 0 0 10px;
@@ -511,7 +506,7 @@ section#comments .comment-header a:after {
 }
 
 #twitter-header {
-    background: url('/img/background/bg-header.png') repeat;
+    background: #859C40;
     padding: 5px;
     color: #FFF;
     -webkit-border-radius: 0.3em 0.3em 0 0;
@@ -537,7 +532,7 @@ section#comments .comment-header a:after {
 }
 
 #twitter-footer {
-    background: url('/img/background/bg-header.png') repeat;
+    background: #859C40;
     color: #FFF;
     padding: 5px 8px;
     margin-bottom: 15px;
