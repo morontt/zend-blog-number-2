@@ -26,7 +26,7 @@
         }
     ?>
 </article>
-<?php if (getenv('APPLICATION_ENV') != 'testing') {
+<?php if (!$this->post->hide && getenv('APPLICATION_ENV') != 'testing') {
 /*
 <section id="social">
     <div id="fb-root"></div>
