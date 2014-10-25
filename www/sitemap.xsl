@@ -17,7 +17,7 @@
                     #intro span { color: black; font-weight: bold; }
                     th { text-align:left; padding-right:15px; font-size: 12pt; border-bottom:1px black solid; }
                     td { text-align:center; }
-					td.url { text-align:left; }
+                    td.url { text-align:left; }
                     tr.even { background-color: #D6E0B7; }
                     tr.even a { color: #59662C; }
                     #footer { padding:2px; margin:10px; font-size: 10pt; color:gray; }
