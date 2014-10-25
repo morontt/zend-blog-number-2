@@ -12,11 +12,10 @@ class Application_Model_Commentators extends Zend_Db_Table_Abstract
      * @param string $name
      * @param string $mail
      * @param string $website
-     * @param string|null $emailHash
      * @param integer|null $disqusId
      * @return integer
      */
-    public function getCommentatorId($name, $mail, $website, $emailHash = null, $disqusId = null)
+    public function getCommentatorId($name, $mail, $website, $disqusId = null)
     {
         $select = $this->select()
             ->where('name = ?', $name);
@@ -50,11 +49,7 @@ class Application_Model_Commentators extends Zend_Db_Table_Abstract
                 $data['disqus_id'] = $disqusId;
             }
 
-            if ($emailHash) {
-                $data['email_hash'] = $emailHash;
-            } else {
-                $data['email_hash'] = self::getAvatarHash($name, $mail, $website);
-            }
+            $data['email_hash'] = self::getAvatarHash($name, $mail, $website);
 
             $result = $this->insert($data);
         }
@@ -142,7 +137,6 @@ class Application_Model_Commentators extends Zend_Db_Table_Abstract
                 $author['name'],
                 null,
                 $author['website'],
-                $author['emailHash'],
                 $author['id']
             );
         }

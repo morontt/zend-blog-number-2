@@ -73,7 +73,6 @@ foreach ($disqusPosts as $item) {
         'created' => $item->createdAt,
         'author' => array(
             'name' => $item->author->name,
-            'emailHash' => $item->author->emailHash,
             'website' => $item->author->url,
             'id' => (int) $item->author->id,
         ),
