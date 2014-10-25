@@ -111,10 +111,10 @@ class Application_Model_Comments extends Zend_Db_Table_Abstract
     /**
      * @param array $comments
      * @param array $postsArray
-     * @param string $ownerHash
+     * @param integer $ownerId
      * @param integer $userId
      */
-    public function saveDisqusComments(array $comments, array $postsArray, $ownerHash, $userId)
+    public function saveDisqusComments(array $comments, array $postsArray, $ownerId, $userId)
     {
         $filter = new Zend_Filter_StripTags(array(
             'allowTags'    => array('a', 's', 'b', 'i', 'em', 'strong', 'img'),
@@ -141,7 +141,7 @@ class Application_Model_Comments extends Zend_Db_Table_Abstract
                         'disqus_id'     => $comment['id'],
                     );
 
-                    if ($comment['author']['emailHash'] == $ownerHash) {
+                    if ($comment['author']['id'] == $ownerId) {
                         $dataArray['user_id'] = $userId;
                     } else {
                         $dataArray['commentator_id'] = $comment['commentator_id'];

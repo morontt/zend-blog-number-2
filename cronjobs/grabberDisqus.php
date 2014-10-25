@@ -107,5 +107,5 @@ if (!empty($comments)) {
         $postsArray = $postsTable->getPostsByDisqusThreads($threads);
     }
 
-    $commentsTable->saveDisqusComments($comments, $postsArray, $ownerHash, $owner->id);
+    $commentsTable->saveDisqusComments($comments, $postsArray, $configObject->sys_parameters->disqus_autor, $owner->id);
 }
