@@ -419,12 +419,14 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
     public function saveDisqusThreads(array $disqusThreads)
     {
         foreach ($disqusThreads as $item) {
-            $url = str_replace('/article/', '', $item->identifiers[0]);
+            foreach ($item->identifiers as $identificator) {
+                $url = str_replace('/article/', '', $identificator);
 
-            $post = $this->fetchRow($this->select()->where('url = ?', $url));
-            if ($post) {
-                $post->disqus_thread = $item->id;
-                $post->save();
+                $post = $this->fetchRow($this->select()->where('url = ?', $url));
+                if ($post) {
+                    $post->disqus_thread = $item->id;
+                    $post->save();
+                }
             }
         }
     }

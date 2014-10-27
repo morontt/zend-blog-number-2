@@ -98,7 +98,7 @@ if (!empty($comments)) {
         $disqusThreads = $disqus->forums->listThreads(
             array(
                 'forum' => $disqusOptions->shortname,
-                'thread' => $threads,
+                'thread' => $postsArray['unknown'],
             )
         );
 
