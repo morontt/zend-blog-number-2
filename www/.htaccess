@@ -93,6 +93,8 @@ RewriteEngine On
 RewriteCond %{HTTP_HOST} ^www\.morontt\.info$ [NC]
 RewriteRule ^(.*)$ http://morontt.info/$1 [R=301,L]
 
+RedirectPermanent /category/veb-server /category/web-server
+
 # Redirect to URI without front controller to prevent duplicate content
 # (with and without `/index.php`). Only do this redirect on the initial
 # rewrite by Apache and not on subsequent cycles. Otherwise we would get an
