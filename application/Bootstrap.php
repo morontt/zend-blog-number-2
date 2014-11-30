@@ -120,7 +120,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         Zend_Registry::set('options', $options);
 
         define('IMG_DOMAIN', $options['img_domain']);
-        define('BASE_URL', $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']);
+        define('BASE_URL', 'https://' . $_SERVER['HTTP_HOST']);
     }
 }
-
