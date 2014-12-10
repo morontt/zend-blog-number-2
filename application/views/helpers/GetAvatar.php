@@ -27,6 +27,6 @@ class Application_View_Helper_GetAvatar extends Zend_View_Helper_Abstract
             $indexDefault = ($comment['commentator_id']) % $countArray;
         }
 
-        return 'http://www.gravatar.com/avatar/' . $hash . '?d=' . $defaultsArray[$indexDefault];
+        return '//www.gravatar.com/avatar/' . $hash . '?d=' . $defaultsArray[$indexDefault];
     }
 }
