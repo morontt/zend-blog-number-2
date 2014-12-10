@@ -8,9 +8,11 @@ if (count($this->posts)) {
                 <?php echo $this->viewDateTime($post->time_created); ?>
             </time>
             <h2>
-                <a href="<?php echo $this->url(array('url' => $post->cat_url), 'category-page', true); ?>"><?php
+                <a href="<?php echo $this->url(array('url' => $post->cat_url), 'category-page', true); ?>"
+                   class="reactive"><?php
                     echo $post->cat_name; ?></a> &rarr;
-                <a href="<?php echo $topicUrl; ?>"><?php echo $post->title; ?></a>
+                <a href="<?php echo $topicUrl; ?>"
+                   class="reactive"><?php echo $post->title; ?></a>
             </h2>
             <div class="text-post"><?php echo $this->TopicPreview($post->text_post, $topicUrl); ?></div>
             <?php
@@ -28,7 +30,8 @@ if (count($this->posts)) {
             if ($countComments) {
                 ?>
                 <div class="count_comments">
-                    <a href="<?php echo $topicUrl; ?>#dis_comm">
+                    <a href="<?php echo $topicUrl; ?>#dis_comm"
+                       class="reactive">
                         <?php echo $this->commentsCountString($countComments); ?>
                     </a>
                 </div>
