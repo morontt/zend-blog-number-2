@@ -55,13 +55,7 @@
 <![endif]-->
 <?php
     echo $this->headStyle() . PHP_EOL;
-    $this->headScript()
-        ->prependFile('//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js', 'text/javascript', array())
-        ->prependFile('/js/syntaxhighlighter/shMain_20130218.js', 'text/javascript', array())
-        ->prependFile('//html5shim.googlecode.com/svn/trunk/html5.js', 'text/javascript', array('conditional' => 'lt IE 9'));
 
-    echo $this->headScript() . PHP_EOL; ?>
-<?php
     if (!in_array(getenv('APPLICATION_ENV'), array('development', 'testing')) && !Zend_Auth::getInstance()->hasIdentity()) {
         $options = Zend_Registry::get('options');
         $googleAnalyticsCode = $options['sys_parameters']['googleanalytic'];
@@ -172,6 +166,13 @@
             </div>
         </div>
     </footer>
+<?php
+    $this->headScript()
+        ->prependFile('//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js', 'text/javascript', array())
+        ->prependFile('/js/syntaxhighlighter/shMain_20130218.js', 'text/javascript', array())
+        ->prependFile('//html5shim.googlecode.com/svn/trunk/html5.js', 'text/javascript', array('conditional' => 'lt IE 9'));
+
+    echo $this->headScript() . PHP_EOL; ?>
     <script type="text/javascript">
         SyntaxHighlighter.all();
 
