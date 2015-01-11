@@ -2,8 +2,9 @@
 <html lang="ru">
 <head>
 <?php
-    $this->headMeta()->prependName('author', 'morontt')
-                     ->prependHttpEquiv('Content-Type', 'text/html; charset=UTF-8');
+    $this->headMeta()
+        ->setCharset('utf-8')
+        ->appendName('author', 'morontt');
     if (isset($this->metaDescription) && $this->metaDescription) {
         $this->headMeta()->appendName('description', $this->metaDescription);
     }
