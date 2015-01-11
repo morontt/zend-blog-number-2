@@ -2,7 +2,7 @@
 
 currentdate=`date '+%Y%m%d'`
 
-#touch ./www/css/temp.css
+touch ./www/css/temp.css
 
 cat ./www/css/all.css > ./www/css/temp.css
 echo "" >> ./www/css/temp.css
