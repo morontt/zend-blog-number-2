@@ -43,6 +43,7 @@
         ->prependStylesheet('/css/yaml/core/iehacks.min.css', 'screen', 'lte IE 7')
         ->prependStylesheet('/css/main_20150111.min.css');
     echo $this->headLink() . PHP_EOL; ?>
+<!--[if lt IE 9]><script type="text/javascript" src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <!--[if gte IE 7]>
 <style type="text/css">
     #main .ym-wrapper { background: #DCE7B4; }
@@ -169,29 +170,30 @@
 <?php
     $this->headScript()
         ->prependFile('//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js', 'text/javascript', array())
-        ->prependFile('/js/syntaxhighlighter/shMain_20130218.js', 'text/javascript', array())
-        ->prependFile('//html5shim.googlecode.com/svn/trunk/html5.js', 'text/javascript', array('conditional' => 'lt IE 9'));
+        ->prependFile('/js/syntaxhighlighter/shMain_20130218.js', 'text/javascript', array());
 
     echo $this->headScript() . PHP_EOL; ?>
     <script type="text/javascript">
         SyntaxHighlighter.all();
 
         $(function () {
-            var href_cache = {};
+            if (document.head) {
+                var href_cache = {};
 
-            $('a.reactive').hover(function () {
-                var keys = $(this).attr('href').match(/^[^#]+/);
-                var url = keys[0];
+                $('a.reactive').hover(function () {
+                    var keys = $(this).attr('href').match(/^[^#]+/);
+                    var url = keys[0];
 
-                if (href_cache[url] === undefined) {
-                    href_cache[url] = true;
+                    if (href_cache[url] === undefined) {
+                        href_cache[url] = true;
 
-                    var link = document.createElement('link');
-                    link.rel = 'prefetch';
-                    link.href = url;
-                    document.head.appendChild(link);
-                }
-            });
+                        var link = document.createElement('link');
+                        link.rel = 'prefetch';
+                        link.href = url;
+                        document.head.appendChild(link);
+                    }
+                });
+            }
         });
     </script>
 </body>
