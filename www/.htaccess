@@ -91,6 +91,7 @@
 RewriteEngine On
 
 RedirectPermanent /category/veb-server /category/web-server
+RedirectPermanent /article/maksimalnaya-dlina-url-adresa-v-internet-explorer-i-drugie-ogranicheniya /article/maksimalnaya-dlina-url-v-ie
 
 # Redirect to URI without front controller to prevent duplicate content
 # (with and without `/index.php`). Only do this redirect on the initial
