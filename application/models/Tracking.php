@@ -22,16 +22,19 @@ class Application_Model_Tracking extends Zend_Db_Table_Abstract
         $trackingAgent = new Application_Model_TrackingAgent();
         $agentArray    = $trackingAgent->getAgent();
 
+        $now = new \DateTime('now');
+        $timestamp = (int)$now->format('U') - self::VIEW_TIME;
+
         $select = $this->select()
             ->from($this->_name, array('id'))
-            ->where('user_agent_id = ?', (int) $agentArray['id'])
+            ->where('user_agent_id = ?', (int)$agentArray['id'])
             ->where('ip_addr = ?', $clientIp)
-            ->where('(UNIX_TIMESTAMP() - UNIX_TIMESTAMP( time_created )) < ' . self::VIEW_TIME);
+            ->where('timestamp_created > ?', $timestamp);
 
         if (is_null($postId)) {
             $select->where('post_id IS NULL');
         } else {
-            $select->where('post_id = ?', (int) $postId);
+            $select->where('post_id = ?', (int)$postId);
         }
 
         $trackingRow = $this->fetchRow($select);
@@ -48,10 +51,12 @@ class Application_Model_Tracking extends Zend_Db_Table_Abstract
             $postsCounts->updateViewCount($postId);
         }
 
+        $timeCreated = new \DateTime('now');
         $data = array(
-            'user_agent_id' => (int) $agentArray['id'],
-            'ip_addr'       => $clientIp,
-            'time_created'  => new Zend_Db_Expr('NOW()'),
+            'user_agent_id'     => (int)$agentArray['id'],
+            'ip_addr'           => $clientIp,
+            'time_created'      => $timeCreated->format('Y-m-d H:i:s'),
+            'timestamp_created' => $timeCreated->format('U'),
         );
 
         if (!is_null($postId)) {
@@ -99,7 +104,7 @@ class Application_Model_Tracking extends Zend_Db_Table_Abstract
             }
 
             $resultArray[] = array(
-                'value' => (int) $dataArray[0]['count'],
+                'value' => (int)$dataArray[0]['count'],
                 'label' => $label,
             );
 
@@ -117,21 +122,21 @@ class Application_Model_Tracking extends Zend_Db_Table_Abstract
     {
         $dateTime->setTime(0, 0, 0);
         if ($period == self::INTERVAL_WEEK) {
-            $dayWeek = (int) $dateTime->format('N');
+            $dayWeek = (int)$dateTime->format('N');
             $dayWeek--;
             if ($dayWeek > 0) {
                 $dateTime->modify("- {$dayWeek} day");
             }
         }
         if ($period == self::INTERVAL_MONTH) {
-            $dayMonth = (int) $dateTime->format('j');
+            $dayMonth = (int)$dateTime->format('j');
             $dayMonth--;
             if ($dayMonth > 0) {
                 $dateTime->modify("- {$dayMonth} day");
             }
         }
         if ($period == self::INTERVAL_YEAR) {
-            $dayYear = (int) $dateTime->format('z');
+            $dayYear = (int)$dateTime->format('z');
             if ($dayYear > 0) {
                 $dateTime->modify("- {$dayYear} day");
             }
@@ -169,5 +174,4 @@ class Application_Model_Tracking extends Zend_Db_Table_Abstract
 
         return $dataArray;
     }
-
 }
