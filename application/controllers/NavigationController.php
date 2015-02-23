@@ -128,6 +128,7 @@ class NavigationController extends Zend_Controller_Action
         $category = new Application_Model_Category();
         $notEmpty = $category->getNotEmptyCategory();
 
+        $parentId = 0;
         foreach ($notEmpty as $category) {
             if ($category['url'] == $url) {
                 $parentId = (int) $category['id'];

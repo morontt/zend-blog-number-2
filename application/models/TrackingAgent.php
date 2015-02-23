@@ -11,13 +11,14 @@ class Application_Model_TrackingAgent extends Zend_Db_Table_Abstract
     public function getAgent()
     {
         if (isset($_SERVER['HTTP_USER_AGENT'])) {
-            $userAgent = substr($_SERVER['HTTP_USER_AGENT'], 0, 255);
+            $userAgent = $_SERVER['HTTP_USER_AGENT'];
         } else {
             $userAgent = 'unknown';
         }
 
+        $hash = md5($userAgent);
         $select = $this->select()
-            ->where('user_agent LIKE ?', $userAgent);
+            ->where('hash = ?', $hash);
 
         $agentRow = $this->fetchRow($select);
 
@@ -26,6 +27,7 @@ class Application_Model_TrackingAgent extends Zend_Db_Table_Abstract
         } else {
             $result = array(
                 'user_agent' => $userAgent,
+                'hash'       => $hash,
                 'bot_filter' => $this->filterBots($userAgent),
             );
             $result['id'] = $this->insert($result);
