@@ -9,8 +9,8 @@
         $this->headMeta()->appendName('description', $this->metaDescription);
     }
     echo $this->headMeta() . PHP_EOL;
-    $this->headTitle($this->layout()->title);
     $this->headTitle($this->browsertitle);
+    $this->headTitle($this->layout()->title);
     $this->headTitle()->setSeparator(' » ');
     echo $this->headTitle() . PHP_EOL; ?>
 <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
