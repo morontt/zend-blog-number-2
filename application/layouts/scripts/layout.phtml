@@ -39,6 +39,11 @@
         'rel'   => 'dns-prefetch',
         'href'  => '//s09.flagcounter.com',
     ));
+    $this->headLink(array(
+        'rel'   => 'author',
+        'href'  => '/humans.txt',
+        'type'  => 'text/plain',
+    ));
     $this->headLink()
         ->prependStylesheet('/css/yaml/core/iehacks.min.css', 'screen', 'lte IE 7')
         ->prependStylesheet('/css/main_20150219.min.css');
