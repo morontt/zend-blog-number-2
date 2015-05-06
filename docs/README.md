@@ -24,35 +24,21 @@ The following is a sample VHOST you might want to consider for your project.
 
     <Directory "/path/to/project-dir/httpdocs/www">
         DirectoryIndex index.php index.html
-        Options FollowSymLinks
-        Options -Indexes
-        AllowOverride All
-        Order deny,allow
-        Allow from all
+        Options +FollowSymLinks -Indexes
+        AllowOverride None
+        Allow from All
         Require all granted
+
+        RewriteEngine On
+
+        RewriteCond %{ENV:REDIRECT_STATUS} ^$
+        RewriteRule ^index\.php(/(.*)|$) %{CONTEXT_PREFIX}/$2 [R=301,L]
+
+        RewriteCond %{REQUEST_FILENAME} -s [OR]
+        RewriteCond %{REQUEST_FILENAME} -l
+        RewriteRule ^.*$ - [NC,L]
+        RewriteRule ^.*$ index.php [NC,L]
     </Directory>
-
-</VirtualHost>
-```
-
-```html
-<VirtualHost *:80>
-    DocumentRoot "/path/to/project-dir/httpdocs/img"
-    ServerName img.zendblog-2.loc
-
-    SetEnv APPLICATION_ENV "development"
-    ErrorLog "/path/to/project-dir/logs/error.txt"
-    CustomLog "/path/to/project-dir/logs/access.txt" common
-
-    <Directory "/path/to/project-dir/httpdocs/img">
-        DirectoryIndex index.php index.html
-        Options FollowSymLinks
-        AllowOverride All
-        Order deny,allow
-        Allow from all
-        Require all granted
-    </Directory>
-
 </VirtualHost>
 ```
 
