@@ -53,7 +53,7 @@ header {
 }
 
 footer {
-    background: url('/img/background/bg-header.png') repeat;
+    background: #859C40;
 }
 
 #main {
@@ -62,7 +62,7 @@ footer {
 
 .adminmenu,
 .ym-hlist {
-    background: url('/img/background/bg-header.png') repeat;
+    background: #859C40;
 }
 
 .ym-hlist ul li a,
