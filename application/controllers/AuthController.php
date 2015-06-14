@@ -31,7 +31,7 @@ class AuthController extends Zend_Controller_Action
                             ->setCredentialColumn('password')
                             ->setIdentity($formData['username'])
                             ->setCredential($formData['password'])
-                            ->setCredentialTreatment('MD5(CONCAT( ?, password_salt ))');
+                            ->setCredentialTreatment('SHA2(CONCAT( ?, \'{\', password_salt, \'}\'), 384)');
 
                 $result = $auth->authenticate($authAdapter);
                 if ($result->isValid()) {
