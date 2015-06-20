@@ -44,22 +44,6 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `avatar`
---
-
-CREATE TABLE IF NOT EXISTS `avatar` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `hash` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `default` smallint(6) NOT NULL,
-  `src` varchar(48) COLLATE utf8_unicode_ci NOT NULL,
-  `last_modified` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_1677722FD1B862B8` (`hash`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Структура таблицы `category`
 --
 
