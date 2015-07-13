@@ -62,7 +62,10 @@
     ));
     $this->headLink()
         ->prependStylesheet('/css/yaml/core/iehacks.min.css', 'screen', 'lte IE 7')
-        ->prependStylesheet('/css/main_20150219.min.css');
+        //->prependStylesheet('/css/main.css')
+        //->prependStylesheet('/css/all.css')
+        ->prependStylesheet('/css/main_20150713.min.css')
+    ;
     echo $this->headLink() . PHP_EOL; ?>
 <!--[if lt IE 9]><script type="text/javascript" src="//cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"></script><![endif]-->
 <!--[if gte IE 7]>
@@ -98,7 +101,7 @@
     <header>
         <div class="ym-wrapper">
             <div class="ym-wbox">
-                <h1><?php echo $this->layout()->title; ?></h1>
+                <span><?php echo $this->layout()->title; ?></span>
             </div>
         </div>
     </header>

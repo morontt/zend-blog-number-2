@@ -7,13 +7,13 @@ if (count($this->posts)) {
             <time datetime="<?php echo $this->viewDateTime($post->time_created, DateTime::W3C); ?>">
                 <?php echo $this->viewDateTime($post->time_created); ?>
             </time>
-            <h2>
+            <h1>
                 <a href="<?php echo $this->url(array('url' => $post->cat_url), 'category-page', true); ?>"
                    class="reactive"><?php
                     echo $post->cat_name; ?></a> &rarr;
                 <a href="<?php echo $topicUrl; ?>"
                    class="reactive"><?php echo $post->title; ?></a>
-            </h2>
+            </h1>
             <div class="text-post"><?php echo $this->TopicPreview($post->text_post, $topicUrl); ?></div>
             <?php
                 $cacheOutput = Zend_Registry::get('cacheOutput');

@@ -62,6 +62,12 @@ header .ym-wbox {
     background-size: contain;
 }
 
+header .ym-wbox span {
+    color: #FFF;
+    font-size: 24pt;
+    font-weight: bold;
+}
+
 footer {
     background: url('/img/background/bg-footer.png') repeat;
 }
@@ -175,11 +181,11 @@ footer a {
     color: #8FA936;
 }
 
-.ym-col1 article h2 {
+.ym-col1 article h1 {
     font-size: 17pt;
 }
 
-.ym-col1 article h2 a {
+.ym-col1 article h1 a {
     color: #000;
     text-decoration: none;
 }

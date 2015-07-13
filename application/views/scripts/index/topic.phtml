@@ -6,8 +6,8 @@
     <time datetime="<?php echo $this->viewDateTime($this->post->time_created, DateTime::W3C); ?>">
         <?php echo $this->viewDateTime($this->post->time_created); ?>
     </time>
-    <h2><a href="<?php echo $this->url(array('url' => $this->post->cat_url), 'category-page', true); ?>"><?php
-            echo $this->post->cat_name; ?></a> &rarr; <?php echo $this->post->title; ?></h2>
+    <h1><a href="<?php echo $this->url(array('url' => $this->post->cat_url), 'category-page', true); ?>"><?php
+            echo $this->post->cat_name; ?></a> &rarr; <?php echo $this->post->title; ?></h1>
     <div class="text-post">
         <?php echo $this->post->text_post; ?>
     </div>
