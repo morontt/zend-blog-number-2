@@ -11,3 +11,5 @@ cat ./www/css/main.css >> ./www/css/temp.css
 java -jar ./bin/yuicompressor.jar ./www/css/temp.css -o ./www/css/main_$currentdate.min.css --charset utf-8
 
 rm ./www/css/temp.css
+
+sed -i 's/main_\([0-9]\{8\}\)\.min\.css/main_'$currentdate'\.min\.css/' ./application/layouts/scripts/layout.phtml
