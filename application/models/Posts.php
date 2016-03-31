@@ -286,7 +286,6 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
             'text_post'    => $formData['text_post'],
             'description'  => $formData['description'],
             'url'          => $url,
-            'user_id'      => Zend_Auth::getInstance()->getIdentity()->id,
             'time_created' => new Zend_Db_Expr('NOW()'),
             'last_update'  => new Zend_Db_Expr('NOW()'),
         );
