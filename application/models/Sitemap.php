@@ -2,10 +2,8 @@
 
 class Application_Model_Sitemap
 {
-    public static function updateSitemap()
+    public static function generateSitemap()
     {
-        $result = false;
-
         $topic = new Application_Model_Posts();
         $arrayTopic = $topic->getSitemapTopic();
 
@@ -56,13 +54,8 @@ class Application_Model_Sitemap
 STATICPAGE;
 
         $xml .= $staticPage . PHP_EOL;
-
         $xml .= '</urlset>' . PHP_EOL;
 
-        $fh = fopen(realpath(APPLICATION_PATH . '/../www') . '/sitemap.xml', 'w');
-        fwrite($fh, $xml);
-        fclose($fh);
-
-        return $result;
+        return $xml;
     }
 }

@@ -51,8 +51,6 @@ class Admin_TopicController extends Zend_Controller_Action
                 $topic = new Application_Model_Posts();
                 $topic->createNewTopic($formData);
 
-                Application_Model_Sitemap::updateSitemap();
-
                 $this->_flashMessenger->addMessage('Запись создана');
 
                 $this->clearCache();
@@ -84,8 +82,6 @@ class Admin_TopicController extends Zend_Controller_Action
                 }
 
                 $topic->editTopic($formData, $id);
-
-                Application_Model_Sitemap::updateSitemap();
 
                 $this->_flashMessenger->addMessage('Запись отредактирована');
 

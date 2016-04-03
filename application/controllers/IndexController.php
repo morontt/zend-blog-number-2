@@ -178,6 +178,17 @@ class IndexController extends Zend_Controller_Action
         $feed->send();
     }
 
+    public function sitemapAction()
+    {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+
+        $sitemap = Application_Model_Sitemap::generateSitemap();
+
+        $this->getResponse()->setHeader('Content-Type', 'application/xml');
+        $this->getResponse()->appendBody($sitemap);
+    }
+
     public function addcommentAction()
     {
         $this->redirect('/');
