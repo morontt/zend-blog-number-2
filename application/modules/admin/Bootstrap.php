@@ -2,7 +2,6 @@
 
 class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
 {
-
     protected function _initAppAutoload()
     {
         $autoloader = new Zend_Application_Module_Autoloader(array(
@@ -12,5 +11,4 @@ class Admin_Bootstrap extends Zend_Application_Module_Bootstrap
 
         return $autoloader;
     }
-
 }

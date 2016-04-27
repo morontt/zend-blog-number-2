@@ -2,7 +2,6 @@
 
 class Application_Form_Validate_Uri extends Zend_Validate_Abstract
 {
-
     const MSG_URI = 'msgUri';
 
     protected $_messageTemplates = array(
@@ -24,5 +23,4 @@ class Application_Form_Validate_Uri extends Zend_Validate_Abstract
 
         return $result;
     }
-
 }

@@ -2,7 +2,6 @@
 
 class Application_View_Helper_RazCountString extends Zend_View_Helper_Abstract
 {
-
     public function razCountString($count)
     {
         $string = '';
@@ -27,5 +26,4 @@ class Application_View_Helper_RazCountString extends Zend_View_Helper_Abstract
 
         return $string;
     }
-
 }

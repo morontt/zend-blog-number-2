@@ -2,7 +2,6 @@
 
 class Admin_Form_Category extends Zend_Form
 {
-
     public function init()
     {
         $this->setMethod('post');
@@ -28,5 +27,4 @@ class Admin_Form_Category extends Zend_Form
 
         $this->addElements(array($category, $parent, $submit));
     }
-
 }

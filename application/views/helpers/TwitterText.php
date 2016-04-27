@@ -2,7 +2,6 @@
 
 class Application_View_Helper_TwitterText extends Zend_View_Helper_Abstract
 {
-
     public function twitterText($text)
     {
         $text = preg_replace("/(^|[\n ])([\w]*?)((ht|f)tp(s)?:\/\/[\w]+[^ \,\"\n\r\t<]*)/is", "$1$2<a href=\"$3\" >$3</a>", $text);
@@ -13,5 +12,4 @@ class Application_View_Helper_TwitterText extends Zend_View_Helper_Abstract
 
         return $text;
     }
-
 }

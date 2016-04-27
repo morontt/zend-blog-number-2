@@ -2,7 +2,6 @@
 
 class Zml_EmailValidator extends Zend_Validate_EmailAddress
 {
-
     public function isValid($value)
     {
         if (parent::isValid($value)) {
@@ -23,5 +22,4 @@ class Zml_EmailValidator extends Zend_Validate_EmailAddress
             return false;
         }
     }
-
 }
