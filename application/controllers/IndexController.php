@@ -241,7 +241,7 @@ class IndexController extends Zend_Controller_Action
 
     protected function saveComment($topicId, $url, $formData)
     {
-        $topicCount    = new Application_Model_PostsCounts();
+        $topic         = new Application_Model_Posts();
         $commentators  = new Application_Model_Commentators();
         $commentsTable = new Application_Model_Comments();
 
@@ -256,7 +256,7 @@ class IndexController extends Zend_Controller_Action
             $commentatorId = 0;
         }
         $commentsTable->saveComment($formData, $commentatorId, $this->_request->getClientIp());
-        $topicCount->updateCommentsCount($topicId);
+        $topic->updateCommentsCount($topicId);
 
         $this->sendCommentMails($url, $formData);
 

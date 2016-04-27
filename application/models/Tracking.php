@@ -47,8 +47,8 @@ class Application_Model_Tracking extends Zend_Db_Table_Abstract
     public function saveEnent($postId, $agentArray, $clientIp)
     {
         if ($agentArray['bot_filter'] && !is_null($postId)) {
-            $postsCounts = new Application_Model_PostsCounts();
-            $postsCounts->updateViewCount($postId);
+            $postsTable = new Application_Model_Posts();
+            $postsTable->updateViewCount($postId);
         }
 
         $timeCreated = new \DateTime('now');

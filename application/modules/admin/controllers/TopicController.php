@@ -167,5 +167,4 @@ class Admin_TopicController extends Zend_Controller_Action
 
         $this->view->twitterBlock = $twitterBlock;
     }
-
 }

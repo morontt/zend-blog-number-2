@@ -21,13 +21,6 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
                     'cat_url'  => 'c.url',
                 )
             )
-            ->joinInner(
-                array('pc' => 'posts_counts'),
-                'p.id = pc.post_id',
-                array(
-                    'count_comments' => 'pc.comments',
-                )
-            )
             ->order('p.time_created DESC');
 
         if (!Zend_Auth::getInstance()->hasIdentity()) {
@@ -77,13 +70,6 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
                     'cat_url'  => 'c.url',
                 )
             )
-            ->joinInner(
-                array('pc' => 'posts_counts'),
-                'p.id = pc.post_id',
-                array(
-                    'count_comments' => 'pc.comments',
-                )
-            )
             ->where('p.hide = 0')
             ->order('p.time_created DESC');
 
@@ -109,13 +95,6 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
                     'cat_url'  => 'c.url',
                 )
             )
-            ->joinInner(
-                array('pc' => 'posts_counts'),
-                'p.id = pc.post_id',
-                array(
-                    'count_comments' => 'pc.comments',
-                )
-            )
             ->joinInner(array('rtt' => 'relation_topictag'), 'p.id = rtt.post_id', array())
             ->joinInner(array('t' => 'tags'), 't.id = rtt.tag_id', array())
             ->where('p.hide = 0')
@@ -138,13 +117,6 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
                     'cat_url'  => 'c.url',
                 )
             )
-            ->joinInner(
-                array('pc' => 'posts_counts'),
-                'p.id = pc.post_id',
-                array(
-                    'count_comments' => 'pc.comments',
-                )
-            )
             ->where('p.hide = 0')
             ->where('p.id = ?', $id);
 
@@ -162,12 +134,6 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
                 array(
                     'cat_name' => 'c.name',
                     'cat_url'  => 'c.url',
-                )
-            )
-            ->joinInner(
-                array('pc' => 'posts_counts'),
-                'p.id = pc.post_id', array(
-                    'count_comments' => 'pc.comments',
                 )
             )
             ->where('p.url = ?', $url);
@@ -280,14 +246,16 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
         $url = Zml_Transform::ruTransform($formData['title']);
 
         $data = array(
-            'category_id'  => $formData['category_id'],
-            'hide'         => $formData['hide'],
-            'title'        => $formData['title'],
-            'text_post'    => $formData['text_post'],
-            'description'  => $formData['description'],
-            'url'          => $url,
-            'time_created' => new Zend_Db_Expr('NOW()'),
-            'last_update'  => new Zend_Db_Expr('NOW()'),
+            'category_id'    => $formData['category_id'],
+            'hide'           => $formData['hide'],
+            'title'          => $formData['title'],
+            'text_post'      => $formData['text_post'],
+            'description'    => $formData['description'],
+            'url'            => $url,
+            'time_created'   => new Zend_Db_Expr('NOW()'),
+            'last_update'    => new Zend_Db_Expr('NOW()'),
+            'comments_count' => 0,
+            'views_count'    => 0,
         );
 
         $topicId = $this->insert($data);
@@ -296,9 +264,6 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
             $relation = new Application_Model_PostsTags();
             $relation->addRelation($formData['tags'], $topicId);
         }
-
-        $topicCount = new Application_Model_PostsCounts();
-        $topicCount->addNewRow($topicId);
 
         return $topicId;
     }
@@ -368,19 +333,33 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
             ->setIntegrityCheck(false)
             ->from(
                 array('p' => $this->_name),
-                array('id', 'title', 'url')
+                array('id', 'title', 'url', 'views_count AS views')
             )
-            ->joinInner(
-                array('pc' => 'posts_counts'),
-                'pc.post_id = p.id',
-                array('views')
-            )
-            ->order('views DESC')
+            ->order('views_count DESC')
             ->limit(6);
 
         $dataArray = $this->fetchAll($select)->toArray();
 
         return $dataArray;
+    }
+
+    /**
+     * @param integer $topicId
+     */
+    public function updateCommentsCount($topicId)
+    {
+        $this->getAdapter()
+            ->query("CALL update_comments_count({$topicId})");
+    }
+
+    /**
+     * @param int $id
+     */
+    public function updateViewCount($id)
+    {
+        $data = array('views_count' => new Zend_Db_Expr('(views_count + 1)'));
+
+        $this->update($data, 'id = ' . $id);
     }
 
     /**
