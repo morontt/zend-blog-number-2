@@ -1,2 +1,3 @@
 User-agent: *
+Host: hostname.loc
 Sitemap: http://hostname.loc/sitemap.xml
