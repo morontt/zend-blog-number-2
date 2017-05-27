@@ -1,0 +1,41 @@
+version: '2'
+services:
+    chipmunk:
+        build:
+            context: ./var/docker/db
+            args:
+                HOST_UID: ${HOST_UID}
+        volumes:
+            - ./var/db_data:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: docker
+            MYSQL_DATABASE: mttblog
+            MYSQL_USER: mttblog
+            MYSQL_PASSWORD: docker
+
+    lizard:
+        build:
+            context: ./var/docker/web
+            args:
+                HOST_UID: ${HOST_UID}
+        volumes:
+            - .:/var/www/html
+        ports:
+            - "80:80"
+        links:
+            - chipmunk
+        depends_on:
+            - chipmunk
+
+    aardvark:
+        build: ./var/docker/dbadmin
+        ports:
+            - "8089:80"
+        links:
+            - chipmunk
+        depends_on:
+            - chipmunk
+        environment:
+            PMA_HOST: chipmunk
+            PMA_USER: root
+            PMA_PASSWORD: docker
