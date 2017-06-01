@@ -16,7 +16,7 @@ services:
     lizard:
         build:
             context: ./var/docker/web
-            # dockerfile: Dockerfile-prod
+            # dockerfile: prod/Dockerfile
             args:
                 HOST_UID: ${HOST_UID}
         volumes:
