@@ -123,6 +123,11 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
         return $this->fetchRow($select);
     }
 
+    /**
+     * @param string $url
+     *
+     * @return null|Application_Model_Row_Post
+     */
     public function getPostByUrl($url)
     {
         $select = $this->select()

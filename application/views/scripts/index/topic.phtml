@@ -105,12 +105,7 @@
     </div>
     <div id="all-comments">
     <?php
-        if (Zend_Auth::getInstance()->hasIdentity()) {
-            $keyComments = 'comments_post_auth_' . $this->post->id;
-        } else {
-            $keyComments = 'comments_post_' . $this->post->id;
-        }
-        if (!($cacheOutput->start($keyComments))) {
+        if (!($cacheOutput->start($this->commentsCacheKey))) {
             $comments = $this->post->getComments();
             echo $this->partialLoop('index/comments.phtml', $comments);
             $cacheOutput->end();

@@ -125,6 +125,7 @@ class IndexController extends Zend_Controller_Action
             }
         }
 
+        $post = null;
         if (isset($url)) {
             $post = $postsTable->getPostByUrl($url);
             if (!$post) {
@@ -136,6 +137,12 @@ class IndexController extends Zend_Controller_Action
                 }
             }
         }
+
+        $commentsTable = new Application_Model_Comments();
+        $this->view->commentsCacheKey = $commentsTable->getPostCommentKey(
+            $post->id,
+            Zend_Auth::getInstance()->hasIdentity()
+        );
 
         $this->view->post = $post;
 
@@ -260,11 +267,7 @@ class IndexController extends Zend_Controller_Action
 
         $this->sendCommentMails($url, $formData);
 
-        $keyComments     = 'comments_post_' . $topicId;
-        $keyAuthComments = 'comments_post_auth_' . $topicId;
         $cacheOutput = Zend_Registry::get('cacheOutput');
-        $cacheOutput->remove($keyComments);
-        $cacheOutput->remove($keyAuthComments);
         $cacheOutput->remove('commentators_stats');
     }
 

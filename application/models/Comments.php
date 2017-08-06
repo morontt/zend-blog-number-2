@@ -90,6 +90,7 @@ class Application_Model_Comments extends Zend_Db_Table_Abstract
             'post_id'       => $formData['topicId'],
             'text'          => $formData['comment_text'],
             'time_created'  => new Zend_Db_Expr('NOW()'),
+            'last_update'  => new Zend_Db_Expr('NOW()'),
             'user_agent_id' => $agentArray['id'],
             'ip_addr'       => $clientIp,
         );
@@ -239,6 +240,41 @@ class Application_Model_Comments extends Zend_Db_Table_Abstract
         }
 
         return $result;
+    }
+
+    /**
+     * @param string $topicId
+     *
+     * @return DateTime
+     */
+    public function getLastUpdateByTopicId($topicId)
+    {
+        $select = $this->select()
+            ->from($this->_name, array(
+                'upd' => new Zend_Db_Expr('COALESCE(MAX(last_update), \'1981-07-18 00:00:00\')'),
+            ))
+            ->where('post_id = ?', $topicId)
+            ->where('deleted = 0');
+
+        $data = $this->fetchAll($select);
+
+        return \DateTime::createFromFormat('Y-m-d H:i:s', $data[0]['upd']);
+    }
+
+    /**
+     * @param string $topicId
+     * @param bool $auth
+     *
+     * @return string
+     */
+    public function getPostCommentKey($topicId, $auth = false)
+    {
+        $key = sprintf('comments_post_%s%s', $auth ? 'auth_' : '', $topicId);
+
+        $lastUpdate = $this->getLastUpdateByTopicId($topicId);
+        $key .= '_' . $lastUpdate->format('Ymd_His');
+
+        return $key;
     }
 
     /**
