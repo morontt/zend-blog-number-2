@@ -27,6 +27,8 @@ services:
             - chipmunk
         depends_on:
             - chipmunk
+        environment:
+            APPLICATION_ENV: development
 
     aardvark:
         build: ./var/docker/dbadmin
