@@ -25,15 +25,17 @@ services:
             - "80:80"
         links:
             - chipmunk
+            - mailcatcher
         depends_on:
             - chipmunk
+            - mailcatcher
         environment:
             APPLICATION_ENV: development
 
     aardvark:
         build: ./var/docker/dbadmin
         ports:
-            - "8089:80"
+            - "8088:80"
         links:
             - chipmunk
         depends_on:
@@ -42,3 +44,8 @@ services:
             PMA_HOST: chipmunk
             PMA_USER: root
             PMA_PASSWORD: docker
+
+    mailcatcher:
+        image: xelbot/mailcatcher
+        ports:
+            - "1080:1080"

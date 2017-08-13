@@ -5,8 +5,26 @@ set_include_path(implode(PATH_SEPARATOR, array(
     get_include_path(),
 )));
 
-require_once(realpath(dirname(__FILE__) . '/../library/Zend/Config/Ini.php'));
-$configObject = new Zend_Config_Ini(realpath(dirname(__FILE__) . '/../application/configs/application.ini'), 'production');
+require_once 'Zend/Loader/Autoloader.php';
+$autoloader = Zend_Loader_Autoloader::getInstance();
+
+$optionsArray = [
+    'env=w' => 'application environment',
+];
+
+$optsObject = new Zend_Console_Getopt($optionsArray);
+$optsObject->parse();
+
+if (isset($optsObject->env)) {
+    $environment = $optsObject->env;
+} else {
+    $environment = 'production';
+}
+
+$configObject = new Zend_Config_Ini(
+    realpath(dirname(__FILE__) . '/../application/configs/application.ini'),
+    $environment
+);
 $optionsArray = $configObject->mail_smtp->toArray();
 
 $pathToSwiftmailer = realpath(dirname(__FILE__) . '/../library/Swiftmailer/lib/swift_required.php');
@@ -22,6 +40,7 @@ $transport->setHost($optionsArray['host'])
           ->setPort($optionsArray['port'])
           ->setEncryption($optionsArray['encryption'])
           ->setUsername($optionsArray['username'])
-          ->setPassword($optionsArray['password']);
+          ->setPassword($optionsArray['password'])
+;
 
 $spool->flushQueue($transport);

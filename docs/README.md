@@ -51,6 +51,6 @@ YUI Compressor
 Cronjobs
 ========
 
-* php cronjobs/grabberDisqus.php  --env development
-* php cronjobs/spoolsend.php
-* php cronjobs/trackingArchive.php  --env development
+* php cronjobs/grabberDisqus.php --env development
+* php cronjobs/spoolsend.php --env development
+* php cronjobs/trackingArchive.php --env development
