@@ -14,7 +14,7 @@ RUN echo Europe/Kiev > /etc/timezone && \
 RUN apt-get update && apt-get install -y apt-utils && apt-get install -y \
     mysql-client
 
-RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install pdo_mysql opcache
 
 COPY ./.bashrc /root/.bashrc
 COPY ./php.ini /usr/local/etc/php/
