@@ -2,7 +2,6 @@
 
 class Application_Model_TrackingAgent extends Zend_Db_Table_Abstract
 {
-
     protected $_name = 'tracking_agent';
 
     const FILTER_BOT     = 0;
@@ -29,6 +28,7 @@ class Application_Model_TrackingAgent extends Zend_Db_Table_Abstract
                 'user_agent' => $userAgent,
                 'hash'       => $hash,
                 'bot_filter' => $this->filterBots($userAgent),
+                'created_at' => new Zend_Db_Expr('NOW()'),
             );
             $result['id'] = $this->insert($result);
         }
@@ -123,6 +123,4 @@ class Application_Model_TrackingAgent extends Zend_Db_Table_Abstract
 
         return $result;
     }
-
 }
-
