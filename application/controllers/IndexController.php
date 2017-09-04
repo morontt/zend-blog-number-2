@@ -266,6 +266,7 @@ class IndexController extends Zend_Controller_Action
         $topic->updateCommentsCount($topicId);
 
         $this->sendCommentMails($url, $formData);
+        $this->sendTelegramMessage($url);
 
         $cacheOutput = Zend_Registry::get('cacheOutput');
         $cacheOutput->remove('commentators_stats');
@@ -325,5 +326,26 @@ class IndexController extends Zend_Controller_Action
                 $mailer->sendEmailToSpool($commentInfo['mail'], $commentInfo['name'], 'Ответ на комментарий', $mailBodyTwo);
             }
         }
+    }
+
+    /**
+     * @param string $slug
+     */
+    protected function sendTelegramMessage($slug)
+    {
+        $url = BASE_URL . $this->view->url(array('url' => $slug), 'topic_url');
+
+        $options = Zend_Registry::get('options');
+        $message = [
+            'chat_id' => $options['telegram']['admin_id'],
+            'text' => "Кто-то оставил [комментарий]({$url})",
+            'parse_mode' => 'Markdown',
+        ];
+
+        exec(sprintf(
+            'nohup php %s \'%s\' > /dev/null 2>&1 &',
+            realpath(__DIR__ . '/../../bin/telegramMessage.php'),
+            json_encode($message)
+        ));
     }
 }
