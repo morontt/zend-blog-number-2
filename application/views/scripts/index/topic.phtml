@@ -1,6 +1,6 @@
 <?php
-    $this->headScript()->appendFile('/js/topic_script_20130319.min.js', 'text/javascript', array());
     $options = Zend_Registry::get('options');
+    $this->headScript()->appendFile($options['cdn_host'] . '/js/topic_script_20130319.min.js', 'text/javascript', []);
 ?>
 <article>
     <time datetime="<?php echo $this->viewDateTime($this->post->time_created, DateTime::W3C); ?>">

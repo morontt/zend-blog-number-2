@@ -8,9 +8,11 @@
     width: 342px;
 }
 STYLE;
+    $options = Zend_Registry::get('options');
+    $cdn = $options['cdn_host'];
 
     $this->headStyle()->appendStyle($styleString);
-    $this->headLink()->appendStylesheet('/css/yaml/add-ons/microformats/microformats.css');
+    $this->headLink()->appendStylesheet($cdn . '/css/yaml/add-ons/microformats/microformats.css');
 
     $this->headMeta()->appendName('description', 'Персональный блог Харченко Александра. Общая информация.');
 ?>
@@ -18,7 +20,7 @@ STYLE;
     <h2>Общая информация</h2>
     <div class="text-post">
         <div id="infopage-img">
-            <img src="/uploads/face_352.jpg" alt="Собственной персоной" title="Собственной персоной"/>
+            <img src="<?php echo $cdn; ?>/uploads/face_352.jpg" alt="Собственной персоной" title="Собственной персоной"/>
         </div>
         <div id="infopage-text">
             <p>Данный блог родился как тестовое задание по освоению PHP. Рождением дело не ограничилось, так как пишу

@@ -5,11 +5,13 @@
 .dhx_tooltip { font-family:"Consolas","Lucida Console",monospace; font-size:10.5pt; background-color: #FFF; background-color: rgba(255,255,255,0.75); padding:2px 4px; border:1px solid #DCE7B4; }
 #chart_container { width:100%; height:320px; }
 STYLE;
+    $options = Zend_Registry::get('options');
+    $cdn = $options['cdn_host'];
 
     $this->headScript()
-        ->appendFile('/js/dhtmlx/chart/dhtmlxchart.js', 'text/javascript', array())
-        ->appendFile('/js/statistic.js', 'text/javascript', array());
-    $this->headLink()->appendStylesheet('/js/dhtmlx/chart/dhtmlxchart.css');
+        ->appendFile($cdn . '/js/dhtmlx/chart/dhtmlxchart.js', 'text/javascript', array())
+        ->appendFile($cdn . '/js/statistic.js', 'text/javascript', array());
+    $this->headLink()->appendStylesheet($cdn . '/js/dhtmlx/chart/dhtmlxchart.css');
     $this->headStyle()->appendStyle($styleString);
 ?>
 <article>
