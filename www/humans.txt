@@ -1,0 +1,13 @@
+/* TEAM */
+	Developer: Alexander Harchenko
+	Contact: morontt [at] gmail [dot] com
+	Twitter: @morontt
+	From: Kharkov, Ukraine
+
+/* SITE */
+	Last update: 2015/02/26
+	Language: Russian
+	Doctype: HTML5
+	IDE: PhpStorm, Atom, Notepad++, nano
+	Server: NGINX + Apache2
+	Powered by: PHP

@@ -22,8 +22,11 @@
         <button type="submit" class="ym-button ym-add" id="submit" name="submit">Добавить комментарий</button>
     </div>
 </form>
+<?php
+    $options = Zend_Registry::get('options');
+?>
 <div class="form_note">
-    Поля, помеченные <img src="/img/req_asterisk.png" alt="asterisk" />, обязательны для заполнения.<br />
+    Поля, помеченные <img src="<?php echo $options['cdn_host']; ?>/img/req_asterisk.png" alt="asterisk" />, обязательны для заполнения.<br />
     Адрес электронной почты нигде не отображается, необходим только для обратной связи.<br/>
     Веб-сайт вводите в формате http://example.org, при желании, конечно.
 </div>
