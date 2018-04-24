@@ -190,7 +190,15 @@ class IndexController extends Zend_Controller_Action
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
 
-        $sitemap = Application_Model_Sitemap::generateSitemap();
+        if ($this->isCDN()) {
+            $sitemap = <<<RAW
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+</urlset>
+RAW;
+        } else {
+            $sitemap = Application_Model_Sitemap::generateSitemap();
+        }
 
         $this->getResponse()->setHeader('Content-Type', 'application/xml');
         $this->getResponse()->appendBody($sitemap);
@@ -239,6 +247,29 @@ class IndexController extends Zend_Controller_Action
         }
 
         $this->_helper->json($result);
+    }
+
+    public function robotsAction()
+    {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(true);
+
+        $robots = <<<RAW
+User-agent: *
+
+Host: morontt.info
+Sitemap: https://morontt.info/sitemap.xml
+RAW;
+        if ($this->isCDN()) {
+            $robots = <<<RAW
+User-agent: *
+
+Disallow: /
+RAW;
+        }
+
+        $this->getResponse()->setHeader('Content-Type', 'text/plain');
+        $this->getResponse()->appendBody($robots);
     }
 
     protected function _redirect404()
@@ -347,5 +378,13 @@ class IndexController extends Zend_Controller_Action
             realpath(__DIR__ . '/../../bin/telegramMessage.php'),
             json_encode($message)
         ));
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isCDN()
+    {
+        return !empty($_SERVER['HTTP_VIA']) && (strpos($_SERVER['HTTP_VIA'], 'cdn77') !== false);
     }
 }
