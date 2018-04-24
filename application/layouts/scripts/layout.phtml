@@ -52,10 +52,6 @@
         'rel'   => 'dns-prefetch',
         'href'  => '//www.google-analytics.com',
     ));
-//    $this->headLink(array(
-//        'rel'   => 'dns-prefetch',
-//        'href'  => '//mc.yandex.ru',
-//    ));
     $this->headLink(array(
         'rel'   => 'dns-prefetch',
         'href'  => '//s09.flagcounter.com',
@@ -67,8 +63,6 @@
     ));
     $this->headLink()
         ->prependStylesheet($cdn . '/css/yaml/core/iehacks.min.css', 'screen', 'lte IE 7')
-        //->prependStylesheet('/css/main.css')
-        //->prependStylesheet('/css/all.css')
         ->prependStylesheet($cdn . '/css/main_20150713.min.css')
     ;
     echo $this->headLink() . PHP_EOL; ?>
@@ -86,8 +80,9 @@
 <?php
     echo $this->headStyle() . PHP_EOL;
 
-    if (!in_array(getenv('APPLICATION_ENV'), array('development', 'testing')) && !Zend_Auth::getInstance()->hasIdentity()) {
-        $options = Zend_Registry::get('options');
+    if (!in_array(getenv('APPLICATION_ENV'), array('development', 'testing'))
+        && !Zend_Auth::getInstance()->hasIdentity()
+    ) {
         $googleAnalyticsCode = $options['sys_parameters']['googleanalytic'];
 ?>
 <script type="text/javascript">
