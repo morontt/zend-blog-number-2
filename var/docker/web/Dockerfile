@@ -1,4 +1,4 @@
-FROM php:5.6-apache
+FROM php:7.1-apache
 
 MAINTAINER Alexander Harchenko <morontt@gmail.com>
 
@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y apt-utils && apt-get install -y \
 
 RUN docker-php-ext-install -j$(nproc) pdo_mysql opcache
 
-RUN yes | pecl install xdebug-2.5.5 \
+RUN yes | pecl install xdebug \
     && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" \
     > /usr/local/etc/php/conf.d/xdebug.ini
 
