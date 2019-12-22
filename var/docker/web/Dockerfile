@@ -7,9 +7,9 @@ VOLUME ["/var/www/html"]
 ARG HOST_UID=1000
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV TZ "Europe/Kiev"
 
-RUN echo Europe/Kiev > /etc/timezone && \
-    dpkg-reconfigure -f noninteractive tzdata
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update && apt-get install -y apt-utils && apt-get install -y \
     mysql-client
