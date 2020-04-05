@@ -201,6 +201,7 @@ RAW;
         }
 
         $this->getResponse()->setHeader('Content-Type', 'application/xml');
+        $this->getResponse()->setHeader('Cache-Control', 'public, max-age=7200');
         $this->getResponse()->appendBody($sitemap);
     }
 
@@ -269,6 +270,7 @@ RAW;
         }
 
         $this->getResponse()->setHeader('Content-Type', 'text/plain');
+        $this->getResponse()->setHeader('Cache-Control', 'public, max-age=2592000');
         $this->getResponse()->appendBody($robots);
     }
 
@@ -385,6 +387,8 @@ RAW;
      */
     protected function isCDN()
     {
-        return !empty($_SERVER['HTTP_VIA']) && (strpos($_SERVER['HTTP_VIA'], 'cdn77') !== false);
+        return !empty($_SERVER['HTTP_VIA'])
+            && (stripos($_SERVER['HTTP_VIA'], 'BunnyCDN') !== false
+                || strpos($_SERVER['HTTP_VIA'], 'cdn77') !== false);
     }
 }
