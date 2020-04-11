@@ -40,11 +40,11 @@ class Application_Model_Tracking extends Zend_Db_Table_Abstract
         $trackingRow = $this->fetchRow($select);
 
         if (!$trackingRow) {
-            $this->saveEnent($postId, $agentArray, $clientIp);
+            $this->saveEvent($postId, $agentArray, $clientIp);
         }
     }
 
-    public function saveEnent($postId, $agentArray, $clientIp)
+    public function saveEvent($postId, $agentArray, $clientIp)
     {
         if ($agentArray['bot_filter'] && !is_null($postId)) {
             $postsTable = new Application_Model_Posts();
@@ -55,7 +55,7 @@ class Application_Model_Tracking extends Zend_Db_Table_Abstract
         $data = array(
             'user_agent_id'     => (int)$agentArray['id'],
             'ip_addr'           => $clientIp,
-            'time_created'      => $timeCreated->format('Y-m-d H:i:s'),
+            'time_created'      => $timeCreated->format('Y-m-d H:i:s.v'),
             'timestamp_created' => $timeCreated->format('U'),
         );
 

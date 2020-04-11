@@ -89,8 +89,8 @@ class Application_Model_Comments extends Zend_Db_Table_Abstract
         $dataArray = array(
             'post_id'       => $formData['topicId'],
             'text'          => $formData['comment_text'],
-            'time_created'  => new Zend_Db_Expr('NOW()'),
-            'last_update'  => new Zend_Db_Expr('NOW()'),
+            'time_created'  => new Zend_Db_Expr('NOW(3)'),
+            'last_update'  => new Zend_Db_Expr('NOW(3)'),
             'user_agent_id' => $agentArray['id'],
             'ip_addr'       => $clientIp,
         );
@@ -251,14 +251,14 @@ class Application_Model_Comments extends Zend_Db_Table_Abstract
     {
         $select = $this->select()
             ->from($this->_name, array(
-                'upd' => new Zend_Db_Expr('COALESCE(MAX(last_update), \'1981-07-18 00:00:00\')'),
+                'upd' => new Zend_Db_Expr('COALESCE(MAX(last_update), \'1981-07-18 00:00:00.000\')'),
             ))
             ->where('post_id = ?', $topicId)
             ->where('deleted = 0');
 
         $data = $this->fetchAll($select);
 
-        return \DateTime::createFromFormat('Y-m-d H:i:s', $data[0]['upd']);
+        return \DateTime::createFromFormat('Y-m-d H:i:s.u', $data[0]['upd']);
     }
 
     /**
