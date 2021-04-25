@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y apt-utils && apt-get install -y \
 
 RUN docker-php-ext-install -j$(nproc) pdo_mysql opcache
 
-RUN yes | pecl install xdebug \
+RUN yes | pecl install xdebug-2.9.8 \
     && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" \
     > /usr/local/etc/php/conf.d/xdebug.ini
 
