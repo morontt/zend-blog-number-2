@@ -13,15 +13,20 @@
 <time datetime="<?php echo $this->viewDateTime($this->comment['time_created'], DateTime::W3C); ?>"><?php
     echo $this->viewDateTime($this->comment['time_created']); ?></time>
 <?php
-    if ($this->comment['username']) {
-        echo $this->comment['username'];
-    } else {
-        if ($this->comment['website']) {
-            echo '<a href="' . $this->comment['website'] . '">' . $this->comment['name'] . '</a>';
+    if (!$this->comment['deleted']) {
+        if ($this->comment['username']) {
+            echo $this->comment['username'];
         } else {
-            echo $this->comment['name'];
+            if ($this->comment['website']) {
+                echo '<a href="' . $this->comment['website'] . '">' . $this->comment['name'] . '</a>';
+            } else {
+                echo $this->comment['name'];
+            }
         }
+    } else {
+        echo '(⊙_⊙)';
     }
+
     if (Zend_Auth::getInstance()->hasIdentity()) {
         echo '&nbsp;[' . $this->comment['ip_addr'] . ']';
     }
@@ -29,7 +34,10 @@
 </div>
 <div class="comment-body">
 <div class="avatar"><img src="<?php echo $this->getAvatar($this->comment); ?>" width="80" height="80" alt="avatar"/></div>
-<div class="comment-text"><?php echo nl2br($this->comment['text']); ?></div>
+<div class="comment-text" <?php if ($this->comment['deleted']) { ?>style="color: grey;"<?php } ?>><?php
+    if (!$this->comment['deleted']) {
+        echo nl2br($this->comment['text']);
+    } else { ?>Комментарий удалён &#x1F4A9;<?php } ?></div>
 <div class="comment-reply"><span data-comment_id="<?php echo $this->comment['id']; ?>">Ответить</span></div>
 <div class="clear-left"></div>
 </div>

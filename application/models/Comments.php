@@ -17,6 +17,7 @@ class Application_Model_Comments extends Zend_Db_Table_Abstract
                 'c.ip_addr',
                 'c.time_created',
                 'c.commentator_id',
+                'c.deleted',
             ))
             ->joinLeft(array('t' => 'commentators'), 'c.commentator_id = t.id', array(
                 't.name',
