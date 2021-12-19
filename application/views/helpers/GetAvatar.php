@@ -4,7 +4,7 @@ class Application_View_Helper_GetAvatar extends Zend_View_Helper_Abstract
 {
     public function getAvatar($comment)
     {
-        if ($comment['deleted']) {
+        if (isset($comment['deleted']) && $comment['deleted']) {
             $options = Zend_Registry::get('options');
             $cdn = $options['cdn_host'];
 
