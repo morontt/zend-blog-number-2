@@ -374,7 +374,7 @@ RAW;
 
         $text = "Кто-то оставил [комментарий]({$url})\n\n*ID*: {$commentId}\n";
         if (!empty($formData['name'])) {
-            $text .= "*Name*:{$formData['name']}\n";
+            $text .= "*Name*: {$formData['name']}\n";
         }
         if (!empty($formData['mail'])) {
             $text .= "*Email*: {$formData['mail']}\n";
