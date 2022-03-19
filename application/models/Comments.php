@@ -29,8 +29,18 @@ class Application_Model_Comments extends Zend_Db_Table_Abstract
                 'user_email_hash' => 'u.email_hash',
                 'u.username',
             ))
-            ->where('c.post_id = ?', $id)
+            ->where('c.post_id = ?', (int)$id)
             ->order('c.id ASC');
+
+        if (Zend_Auth::getInstance()->hasIdentity()) {
+            $select
+                ->joinLeft(['gl' => 'geo_location'], 'c.geo_location_id = gl.id', [])
+                ->joinLeft(['gci' => 'geo_location_city'], ' gl.city_id = gci.id', [])
+                ->joinLeft(['gco' => 'geo_location_country'], 'gci.country_id = gco.id', [
+                    'gco.country_code',
+                ])
+            ;
+        }
 
         return $this->fetchAll($select);
     }

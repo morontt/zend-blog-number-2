@@ -1,4 +1,7 @@
 <?php
+    /**
+     * @var Application_Model_Row_Post $this->post
+     */
     $options = Zend_Registry::get('options');
     $this->headScript()->appendFile($options['cdn_host'] . '/js/topic_script_20130319.min.js', 'text/javascript', []);
 ?>

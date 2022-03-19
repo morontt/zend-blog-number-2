@@ -28,7 +28,11 @@
     }
 
     if (Zend_Auth::getInstance()->hasIdentity()) {
-        echo '&nbsp;[' . $this->comment['ip_addr'] . ']';
+        echo sprintf(
+            '&nbsp;[%s] %s',
+            $this->comment['ip_addr'],
+            !empty($this->comment['country_code']) ? Zml_EmojiFlagSymbol::get($this->comment['country_code']) : ''
+        );
     }
 ?>
 </div>

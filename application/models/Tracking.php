@@ -2,7 +2,6 @@
 
 class Application_Model_Tracking extends Zend_Db_Table_Abstract
 {
-
     protected $_name = 'tracking';
 
     /**
@@ -170,8 +169,6 @@ class Application_Model_Tracking extends Zend_Db_Table_Abstract
             ->order('count DESC')
             ->limit(6);
 
-        $dataArray = $this->fetchAll($select)->toArray();
-
-        return $dataArray;
+        return $this->fetchAll($select)->toArray();
     }
 }
