@@ -28,10 +28,17 @@
     }
 
     if (Zend_Auth::getInstance()->hasIdentity()) {
+        try {
+            $flag = !empty($this->comment['country_code'])
+                ? Zml_EmojiFlagSymbol::get($this->comment['country_code']) : '';
+        } catch (\Exception $e) {
+            $flag = 'N/A';
+        }
+
         echo sprintf(
             '&nbsp;[%s] %s',
             $this->comment['ip_addr'],
-            !empty($this->comment['country_code']) ? Zml_EmojiFlagSymbol::get($this->comment['country_code']) : ''
+            $flag
         );
     }
 ?>
