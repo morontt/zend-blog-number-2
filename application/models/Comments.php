@@ -80,18 +80,27 @@ class Application_Model_Comments extends Zend_Db_Table_Abstract
         return $commentsTree;
     }
 
-    public function saveComment($formData, $commentatorId, $clientIp)
+    /**
+     * @param $formData
+     * @param $commentatorId
+     * @param $clientIp
+     *
+     * @return int
+     */
+    public function saveComment($formData, $commentatorId, $clientIp): int
     {
         $auth = Zend_Auth::getInstance();
 
         $trackingAgent = new Application_Model_TrackingAgent();
         $agentArray = $trackingAgent->getAgent();
 
+        $time = (new \DateTime())->format('Y-m-d H:i:s.v');
+
         $dataArray = array(
             'post_id'       => $formData['topicId'],
             'text'          => $formData['comment_text'],
-            'time_created'  => new Zend_Db_Expr('NOW(3)'),
-            'last_update'  => new Zend_Db_Expr('NOW(3)'),
+            'time_created'  => $time,
+            'last_update'   => $time,
             'user_agent_id' => $agentArray['id'],
             'ip_addr'       => $clientIp,
         );

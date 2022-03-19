@@ -295,11 +295,11 @@ RAW;
         } else {
             $commentatorId = 0;
         }
-        $commentsTable->saveComment($formData, $commentatorId, $this->_request->getClientIp());
+        $commentId = $commentsTable->saveComment($formData, $commentatorId, $this->_request->getClientIp());
         $topic->updateCommentsCount($topicId);
 
         $this->sendCommentMails($url, $formData);
-        $this->sendTelegramMessage($url);
+        $this->sendTelegramMessage($url, $commentId, $formData);
 
         $cacheOutput = Zend_Registry::get('cacheOutput');
         $cacheOutput->remove('commentators_stats');
@@ -363,15 +363,32 @@ RAW;
 
     /**
      * @param string $slug
+     * @param int $commentId
+     * @param array $formData
+     *
+     * @throws Zend_Exception
      */
-    protected function sendTelegramMessage($slug)
+    protected function sendTelegramMessage(string $slug, int $commentId, array $formData)
     {
         $url = BASE_URL . $this->view->url(array('url' => $slug), 'topic_url');
+
+        $text = "Кто-то оставил [комментарий]({$url})\n\n*ID*: {$commentId}\n";
+        if (!empty($formData['name'])) {
+            $text .= "*Name*:{$formData['name']}\n";
+        }
+        if (!empty($formData['mail'])) {
+            $text .= "*Email*: {$formData['mail']}\n";
+        }
+        if (!empty($formData['website'])) {
+            $text .= "*Website*: {$formData['website']}\n";
+        }
+
+        $text .= "\n" . strip_tags($formData['comment_text']);
 
         $options = Zend_Registry::get('options');
         $message = [
             'chat_id' => $options['telegram']['admin_id'],
-            'text' => "Кто-то оставил [комментарий]({$url})",
+            'text' => $text,
             'parse_mode' => 'Markdown',
         ];
 
