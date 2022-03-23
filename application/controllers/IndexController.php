@@ -397,6 +397,11 @@ RAW;
             realpath(__DIR__ . '/../../bin/telegramMessage.php'),
             json_encode($message)
         ));
+
+        exec(sprintf(
+            'nohup php %s > /dev/null 2>&1 &',
+            realpath(__DIR__ . '/../../bin/commentGeoLocation.php')
+        ));
     }
 
     /**
