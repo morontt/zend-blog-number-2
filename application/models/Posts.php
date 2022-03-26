@@ -206,24 +206,18 @@ class Application_Model_Posts extends Zend_Db_Table_Abstract
 
             $linkTopic = $router->assemble(array('url' => $topic->url), 'topic_url', false, true);
 
+            $item = [
+                'title'       => $topic->title,
+                'link'        => BASE_URL . $linkTopic,
+                'description' => $topic->text_post,
+                'lastUpdate'  => $timestamp,
+                'comments'    => BASE_URL . $linkTopic,
+            ];
+
             if ($feedType == 'rss') {
-                $item = array(
-                    'title'       => $topic->title,
-                    'link'        => BASE_URL . $linkTopic,
-                    'description' => $topic->text_post,
-                    'lastUpdate'  => $timestamp,
-                    'comments'    => BASE_URL . $linkTopic,
-                    'guid'        => 'topic_' . $topic->id
-                );
-            } else {
-                $item = array(
-                    'title'       => $topic->title,
-                    'link'        => BASE_URL . $linkTopic,
-                    'description' => $topic->text_post,
-                    'lastUpdate'  => $timestamp,
-                    'comments'    => BASE_URL . $linkTopic,
-                );
+                $item['guid'] = 'topic_' . $topic->id;
             }
+
             $entries[] = $item;
         }
 

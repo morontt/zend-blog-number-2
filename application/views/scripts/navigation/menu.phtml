@@ -1,6 +1,6 @@
 <?php
     $active = ' class="active"';
-    $noHomePage = isset($this->noHomePage) ? true : false;
+    $noHomePage = isset($this->noHomePage);
 
     $requestParams = Zend_Registry::get('requestParams');
     $requestString = implode("-", $requestParams);
