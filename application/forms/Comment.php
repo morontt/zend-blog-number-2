@@ -85,6 +85,10 @@ class Application_Form_Comment extends Zend_Form
             $this->checkCookie();
         }
 
+        $csrfToken = new Zend_Form_Element_Hidden('csrfToken');
+        $csrfToken->addValidator('NotEmpty');
+        $this->addElement($csrfToken);
+
         $this->setElementDecorators($this->elementDecorators);
     }
 

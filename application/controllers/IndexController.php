@@ -154,6 +154,7 @@ class IndexController extends Zend_Controller_Action
 
         $form = new Application_Form_Comment();
         $form->topicId->setValue($post->id);
+        $form->getElement('csrfToken')->setValue($this->generateCommentToken());
 
         $this->view->form = $form;
 
@@ -234,7 +235,10 @@ RAW;
             if ($form->isValid($this->getRequest()->getPost())) {
                 $formData = $form->getValues();
 
-                $this->saveComment($topicId, $url, $formData);
+                if ($this->validCommentToken($formData['csrfToken'])) {
+                    $this->saveComment($topicId, $url, $formData);
+                }
+
                 $result['valid'] = true;
             } else {
                 $formView = new Zend_View;
@@ -412,5 +416,30 @@ RAW;
         return !empty($_SERVER['HTTP_VIA'])
             && (stripos($_SERVER['HTTP_VIA'], 'BunnyCDN') !== false
                 || strpos($_SERVER['HTTP_VIA'], 'cdn77') !== false);
+    }
+
+    private function generateCommentToken($time = null): string
+    {
+        $time = $time ?? time();
+        $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+
+        return base64_encode($time . ':' . hash('md5', 'MD5_' . $userAgent . $time, true));
+    }
+
+    private function validCommentToken($token): bool
+    {
+        $raw = base64_decode($token, true);
+        if ($raw === false) {
+            return false;
+        }
+
+        $position = strpos($raw, ':');
+        if ($position === false) {
+            return false;
+        }
+
+        $time = substr($raw, 0, $position);
+
+        return hash_equals($this->generateCommentToken($time), $token);
     }
 }
