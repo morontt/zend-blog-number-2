@@ -232,6 +232,8 @@ RAW;
         if ($this->getRequest()->isPost() && $url) {
             $form = new Application_Form_Comment();
 
+            $this->logPost();
+
             if ($form->isValid($this->getRequest()->getPost())) {
                 $formData = $form->getValues();
 
@@ -441,5 +443,18 @@ RAW;
         $time = substr($raw, 0, $position);
 
         return hash_equals($this->generateCommentToken($time), $token);
+    }
+
+    private function logPost()
+    {
+        $path = realpath(__DIR__ . '/../../var');
+        $fp = fopen($path . '/comment.log', 'a');
+
+        fwrite($fp, '===  ' . date('Y-m-d H:i:s') . "  ===\n");
+        fwrite($fp, print_r($_POST, true));
+        fwrite($fp, print_r($_SERVER, true));
+        fwrite($fp, "\n");
+
+        fclose($fp);
     }
 }
