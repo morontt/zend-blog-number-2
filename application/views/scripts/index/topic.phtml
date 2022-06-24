@@ -120,11 +120,13 @@
         <div id="comment-form-wrapper"></div>
     <?php } ?>
     </div>
+    <?php if ($this->post->id != 87) { ?>
     <div id="comment_add">
         <?php echo $this->partial('index/formcomment.phtml', array(
             'form' => $this->form,
         )); ?>
     </div>
+    <?php } ?>
 </section>
 <script type="text/javascript">
     var auth_comment = <?php echo (Zend_Auth::getInstance()->hasIdentity()) ? 'true' : 'false'; ?>;
