@@ -2,9 +2,31 @@
  * Generate CSS:
  * pygmentize -S stata-dark -f html -a .highlight > pygments.css
  */
-.highlight pre {
-    line-height: 125%;
+table.highlighttable {
+    background: #232629;
+    border: none;
+    display: block;
     overflow: auto;
+    border-radius: 4px;
+    margin-bottom: 0.75em;
+}
+table.highlighttable tr td {
+    padding: 0;
+}
+table.highlighttable tr td.linenos {
+    border-right: 1px dotted #777;
+}
+table.highlighttable tr td.linenos pre {
+    color: #777;
+}
+table.highlighttable tr pre {
+    line-height: 125%;
+    margin: 0;
+    background-color: transparent;
+    border: none;
+    font-family: "Consolas", "Lucida Console", monospace;
+    font-size: 11pt;
+    padding: 0.2em 0.5em;
 }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
 span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -12,9 +34,7 @@ td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5
 span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
 .highlight .hll { background-color: #49483e }
 .highlight {
-    background: #232629;
     color: #cccccc;
-    margin-bottom: 0.75em;
 }
 .highlight span.lineno {
     padding: 0 0 0 0.75em;
