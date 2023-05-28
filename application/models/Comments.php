@@ -104,6 +104,8 @@ class Application_Model_Comments extends Zend_Db_Table_Abstract
         $trackingAgent = new Application_Model_TrackingAgent();
         $agentArray = $trackingAgent->getAgent();
 
+        $idx = $this->getMaxRightKey($formData['topicId']);
+
         $time = (new \DateTime())->format('Y-m-d H:i:s.v');
 
         $dataArray = array(
@@ -113,6 +115,9 @@ class Application_Model_Comments extends Zend_Db_Table_Abstract
             'last_update'   => $time,
             'user_agent_id' => $agentArray['id'],
             'ip_addr'       => $clientIp,
+            // fake nested set
+            'tree_left_key'  => $idx + 1,
+            'tree_right_key' => $idx + 2,
         );
 
         if ($auth->hasIdentity()) {
@@ -320,5 +325,18 @@ class Application_Model_Comments extends Zend_Db_Table_Abstract
         }
 
         return $result;
+    }
+
+    private function getMaxRightKey(int $topicId): int
+    {
+        $select = $this->select()
+            ->from($this->_name, array(
+                'idx' => new Zend_Db_Expr('COALESCE(MAX(tree_right_key), 0)'),
+            ))
+            ->where('post_id = ?', $topicId);
+
+        $data = $this->fetchAll($select);
+
+        return (int) $data[0]['idx'];
     }
 }
